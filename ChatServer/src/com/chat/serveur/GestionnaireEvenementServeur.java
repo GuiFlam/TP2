@@ -15,6 +15,7 @@ import com.chat.commun.net.Connexion;
 public class GestionnaireEvenementServeur implements GestionnaireEvenement {
     private Serveur serveur;
 
+
     /**
      * Construit un gestionnaire d'événements pour un serveur.
      *
@@ -51,6 +52,11 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     break;
 
                 //Ajoutez ici d’autres case pour gérer d’autres commandes.
+                case "MSG": {
+                    aliasExpediteur = cnx.getAlias();
+                    serveur.envoyerATousSauf(evenement.getArgument(), aliasExpediteur);
+                    break;
+                }
 
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();
@@ -58,4 +64,5 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
             }
         }
     }
+
 }

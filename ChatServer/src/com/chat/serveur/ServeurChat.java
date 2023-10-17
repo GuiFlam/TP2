@@ -96,4 +96,13 @@ public class ServeurChat extends Serveur {
         String s = "";
         return s;
     }
+    public void envoyerATousSauf(String str, String aliasExpediteur) {
+        Connexion connexion;
+        for(int i = 0; i < connectes.size(); ++i) {
+            connexion = connectes.elementAt(i);
+            if(!connexion.getAlias().equals(aliasExpediteur)) {
+                connexion.envoyer(aliasExpediteur + ">>" + str);
+            }
+        }
+    }
 }
