@@ -41,6 +41,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
             cnx = (Connexion) source;
             System.out.println("SERVEUR-Recu : " + evenement.getType() + " " + evenement.getArgument());
             typeEvenement = evenement.getType();
+            aliasExpediteur = cnx.getAlias();
             switch (typeEvenement) {
                 case "EXIT": //Ferme la connexion avec le client qui a envoyé "EXIT":
                     cnx.envoyer("END");
@@ -53,7 +54,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                 //Ajoutez ici d’autres case pour gérer d’autres commandes.
                 case "MSG": {
-                    aliasExpediteur = cnx.getAlias();
                     serveur.envoyerATousSauf(evenement.getArgument(), aliasExpediteur);
                     break;
                 }
