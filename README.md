@@ -1,4 +1,4 @@
-# TP1
+# TP1 : Chat et Échecs en Réseau
 
 Fait par Guillaume Flamand et Louis-Félix Clément.
 
