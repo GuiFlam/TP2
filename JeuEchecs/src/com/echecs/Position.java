@@ -1,6 +1,5 @@
 package com.echecs;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 /**
  * Représente une position sur un échiquier de jeu d'échecs. Les lignes de
  * l'échiquier sont numérotées de 8 à 1 et les colonnes de a à h.
@@ -41,7 +40,7 @@ public class Position {
      * @return boolean true si les 2 positions sont voisines, false sinon.
      */
     public boolean estVoisineDe(Position p) {
-        throw new NotImplementedException();
+        return Math.abs((int)this.colonne - (int)p.getColonne()) == 1 || Math.abs(this.ligne - p.getLigne()) == 1;
     }
     /**
      * Indique si 2 positions sont sur la même ligne sur un échiquier.
@@ -50,7 +49,7 @@ public class Position {
      * @return boolean true si les 2 positions sont sur la même ligne, false sinon.
      */
     public boolean estSurLaMemeLigneQue(Position p) {
-        throw new NotImplementedException();
+        return this.ligne == p.getLigne();
     }
     /**
      * Indique si 2 positions sont sur la même colonne sur un échiquier.
@@ -59,7 +58,7 @@ public class Position {
      * @return boolean true si les 2 positions sont sur la même colonne, false sinon.
      */
     public boolean estSurLaMemeColonneQue(Position p) {
-        throw new NotImplementedException();
+        return Character.compare(this.colonne, p.getColonne()) == 0;
     }
     /**
      * Indique si 2 positions sont sur la même diagonale sur un échiquier.
@@ -68,6 +67,6 @@ public class Position {
      * @return boolean true si les 2 positions sont sur la même diagonale, false sinon.
      */
     public boolean estSurLaMemeDiagonaleQue(Position p) {
-        throw new NotImplementedException();
+        return Math.abs((int)this.colonne - (int)p.getColonne()) == Math.abs(this.ligne - p.getLigne());
     }
 }
