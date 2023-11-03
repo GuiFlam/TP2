@@ -22,6 +22,10 @@ public class PartieEchecs {
     private String aliasJoueur1, aliasJoueur2;
     private char couleurJoueur1, couleurJoueur2;
 
+    static private boolean tour1BlancBouge, tour2BlancBouge, roiBlancBouge, tour1NoirBouge, tour2NoirBouge, roiNoirBouge;
+
+
+
     /**
      * La couleur de celui à qui c'est le tour de jouer (n ou b).
      */
@@ -35,7 +39,9 @@ public class PartieEchecs {
         echiquier = new Piece[8][8];
         //Placement des pièces :
 
+
     }
+
 
     /**
      * Change la main du jeu (de n à b ou de b à n).
@@ -61,9 +67,77 @@ public class PartieEchecs {
      * @return boolean true, si le déplacement a été effectué avec succès, false sinon
      */
     public boolean deplace(Position initiale, Position finale) {
-         throw new NotImplementedException();
+
+        // position initiales et finales sont valide
+        // Si il y a une piece a la position
+        // La couleur de la piece correspond au joueur qui joue
+        // A la position finale il n'y a pas une piece de la meme couleur
+        // Roque: Si le roi ou la tour a bougé on ne peut pas.
+
+        if(estLigneValide(initiale) && estLigneValide(finale) && estColonneValide(initiale) && estColonneValide(finale)) {
+            if(estUnePiece(initiale)) {
+                char couleurPieceInitiale = echiquier[(int)initiale.getColonne() - 65][(int)initiale.getLigne()].getCouleur();
+                if(Character.compare(couleurPieceInitiale, tour) == 0) {
+                    char couleurPieceFinale = echiquier[finale.getColonne() - 65][finale.getLigne()].getCouleur();
+                    if(couleurPieceInitiale != couleurPieceFinale) {
+                        if(Character.compare(tour, 'b') == 0 && !roiBlancBouge) {
+                            if((int)finale.getColonne() - (int)initiale.getColonne() == 2) {
+                                // roque avec tour de droite
+                                if(!tour2BlancBouge) {
+                                    // ROQUE
+                                    echiquier[1][6] = echiquier[1][7];
+                                    echiquier[1][7] = echiquier[1][4];
+                                    return true;
+                                }
+                            }
+                            else if ((int)finale.getColonne() - (int)initiale.getColonne() == -2) {
+                                // roque avec tour de gauche
+                                if(!tour1BlancBouge) {
+                                    // ROQUE
+                                    echiquier[1][2] = echiquier[1][0];
+                                    echiquier[1][0] = echiquier[1][4];
+                                    return true;
+                                }
+                            }
+                        }
+                        else if (!roiBlancBouge){
+                            if((int)finale.getColonne() - (int)initiale.getColonne() == 2) {
+                                // roque avec tour de droite
+                                if(!tour2NoirBouge) {
+                                    // ROQUE
+                                    echiquier[7][6] = echiquier[7][7];
+                                    echiquier[7][7] = echiquier[7][4];
+                                    return true;
+                                }
+                            }
+                            else if ((int)finale.getColonne() - (int)initiale.getColonne() == -2) {
+                                // roque avec tour de gauche
+                                if(!tour1NoirBouge) {
+                                    // ROQUE
+                                    echiquier[7][2] = echiquier[7][0];
+                                    echiquier[7][0] = echiquier[7][4];
+                                    return true;
+                                }
+                            }
+                        }
+                        echiquier[(int)initiale.getColonne()-65][initiale.getLigne()].peutSeDeplacer(initiale, finale, echiquier);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
+    private boolean estLigneValide(Position ligne) {
+        return ligne.getLigne() > 0 && ligne.getLigne() < 9;
+    }
+    private boolean estColonneValide(Position colonne) {
+        return (int)colonne.getColonne() > 64 && (int)colonne.getColonne() < 71;
+    }
+    private boolean estUnePiece(Position position) {
+        return echiquier[position.getColonne() - 65][position.getLigne()] != null;
+    }
     /**
      * Vérifie si un roi est en échec et, si oui, retourne sa couleur sous forme
      * d'un caractère n ou b.
