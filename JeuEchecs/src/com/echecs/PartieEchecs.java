@@ -1,6 +1,11 @@
 package com.echecs;
 
+import com.echecs.pieces.Cavalier;
+import com.echecs.pieces.Fou;
 import com.echecs.pieces.Piece;
+import com.echecs.pieces.Pion;
+import com.echecs.pieces.Roi;
+import com.echecs.pieces.Tour;
 import com.echecs.util.EchecsUtil;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -37,11 +42,47 @@ public class PartieEchecs {
      */
     public PartieEchecs() {
         echiquier = new Piece[8][8];
+
+        tour = 'b';
         //Placement des pièces :
 
+        // Tours
+        echiquier[0][0] = new Tour('b');
+        echiquier[7][0] = new Tour('b');
+        echiquier[0][7] = new Tour('n');
+        echiquier[7][7] = new Tour('n');
 
+        // Cavaliers
+        echiquier[1][0] = new Cavalier('b');
+        echiquier[6][0] = new Cavalier('b');
+        echiquier[1][7] = new Cavalier('n');
+        echiquier[6][7] = new Cavalier('n');
+
+        // Fous
+        echiquier[2][0] = new Fou('b');
+        echiquier[5][0] = new Fou('b');
+        echiquier[2][7] = new Fou('n');
+        echiquier[5][7] = new Fou('n');
+
+        // Reines
+        echiquier[3][0] = new Fou('b');
+        echiquier[3][7] = new Fou('n');
+
+        // Roi
+        echiquier[4][0] = new Fou('b');
+        echiquier[4][7] = new Fou('n');
+
+        // Pions
+        placerPions(1);
+        placerPions(6);
     }
 
+    private void placerPions(int ligne) {
+        int colonne = 0;
+        for(int i = 0; i <= ligne; ++i) {
+            echiquier[colonne++][i] = new Pion(ligne == 1 ? 'b' : 'n');
+        }
+    }
 
     /**
      * Change la main du jeu (de n à b ou de b à n).
@@ -100,7 +141,7 @@ public class PartieEchecs {
                                 }
                             }
                         }
-                        else if (!roiBlancBouge){
+                        else if (!roiNoirBouge){
                             if((int)finale.getColonne() - (int)initiale.getColonne() == 2) {
                                 // roque avec tour de droite
                                 if(!tour2NoirBouge) {
@@ -151,7 +192,32 @@ public class PartieEchecs {
      * si le roi blanc est en échec, tout autre caractère, sinon.
      */
     public char estEnEchec() {
-            throw new NotImplementedException();
+            
+        char caractère = 'e';
+        // Pour chacune des pièces de l'adversaire, si peutsedeplacer à la position du roi est vrai, le roi est en echec. 
+        Position positionRoiBlanc = null;
+        Position positionRoiNoir = null;
+        for(int i = 0; i < echiquier.length; ++i) {
+            for(int j = 0; j < echiquier[0].length; ++j) {
+                if (echiquier[i][j] != null) {
+                    if(echiquier[i][j] instanceof Roi) {
+                        if(Character.compare(echiquier[i][j].getCouleur(),'b') == 0) {
+                            positionRoiBlanc = new Position((char)(i + 65), (byte)j);
+                        }
+                        else {
+                            positionRoiNoir = new Position((char)(i + 65), (byte)j);
+                        }
+                    }
+                    if (echiquier[i][j].peutSeDeplacer(new Position((char)(i + 65), (byte)j), positionRoiBlanc, echiquier)) {
+                        caractère = 'b';
+                    }
+                    else if (echiquier[i][j].peutSeDeplacer(new Position((char)(i + 65), (byte)j), positionRoiNoir, echiquier)) {
+                        caractère = 'n';
+                    }
+                } 
+            }
+        }
+        return caractère;
     }
     /**
      * Retourne la couleur n ou b du joueur qui a la main.
