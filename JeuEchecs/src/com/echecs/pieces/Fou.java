@@ -10,16 +10,15 @@ public class Fou extends Piece
     @Override
     public boolean peutSeDeplacer(Position pos1, Position pos2, Piece[][] echiquier)
     {
-        if(pos1.estSurLaMemeDiagonaleQue(pos2))
+        Piece pieceInitiale = echiquier[(int)pos1.getColonne()-65][pos1.getLigne()];            //Verifie s'il y a une piece de meme couleur a pos1 et pos2
+        Piece pieceFinale = echiquier[(int)pos2.getColonne()-65][pos2.getLigne()];
+        if(Character.compare(pieceInitiale.getCouleur(), pieceFinale.getCouleur()) == 0)
         {
-            for(int i = pos1.getLigne(); i <= pos2.getLigne(); i++)
-            {
-                for(int j = (int)pos1.getColonne()-65; j <= (int)pos2.getColonne()-65; j++)
-                {
-
-                }
-            }
+            return false;
         }
+
+
+
         return false;
     }
 }
