@@ -10,6 +10,38 @@ public class Fou extends Piece
     @Override
     public boolean peutSeDeplacer(Position pos1, Position pos2, Piece[][] echiquier)
     {
+        //Deplacement en X et Y
+        int depX = pos2.getColonne() - pos1.getColonne();
+        int depY = pos2.getLigne() - pos1.getLigne();
+
+        // Verifie si deplacement est diagonale
+        if(!pos1.estSurLaMemeDiagonaleQue(pos2))
+        {
+            return false;
+        }
+
+        int incrementX = depX > 0 ? 1 : -1;
+        int incrementY = depY > 0 ? 1 : -1;
+
+        int colonne = (int)pos1.getColonne()-65 + incrementX;
+        int ligne = pos1.getLigne() + incrementY;
+
+        while(colonne != (int)pos2.getColonne()-65)
+        {
+            if(echiquier[colonne][ligne] != null)
+            {
+                return false;
+            }
+            colonne += incrementX;
+            ligne += incrementY;
+        }
+        return true;
+    }
+
+    /*
+    @Override
+    public boolean peutSeDeplacer(Position pos1, Position pos2, Piece[][] echiquier)
+    {
         Position posTemp;
 
         if(pos1.getColonne() < pos2.getColonne() && pos1.getLigne() < pos2.getLigne())      //Cas que pos1 < pos2
@@ -31,7 +63,5 @@ public class Fou extends Piece
             }
             return true;
         }
-
-        return false;
-    }
+        */
 }
