@@ -1,17 +1,20 @@
 package com.chat.serveur;
 
+import com.chat.client.Client;
+import com.chat.client.ClientChat;
 import com.chat.commun.evenement.Evenement;
 import com.chat.commun.evenement.GestionnaireEvenement;
 import com.chat.commun.net.Connexion;
+import com.echecs.PartieEchecs;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Cette classe représente un gestionnaire d'événement d'un serveur. Lorsqu'un serveur reçoit un texte d'un client,
- * il crée un événement à partir du texte reçu et alerte ce gestionnaire qui réagit en gérant l'événement.
+ * Cette classe reprï¿½sente un gestionnaire d'ï¿½vï¿½nement d'un serveur. Lorsqu'un serveur reï¿½oit un texte d'un client,
+ * il crï¿½e un ï¿½vï¿½nement ï¿½ partir du texte reï¿½u et alerte ce gestionnaire qui rï¿½agit en gï¿½rant l'ï¿½vï¿½nement.
  *
- * @author Abdelmoumène Toudeft (Abdelmoumene.Toudeft@etsmtl.ca)
+ * @author Abdelmoumï¿½ne Toudeft (Abdelmoumene.Toudeft@etsmtl.ca)
  * @version 1.0
  * @since 2023-09-01
  */
@@ -22,18 +25,18 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
     private List<SalonPrive> salonsPrives = new ArrayList<>();
 
     /**
-     * Construit un gestionnaire d'événements pour un serveur.
+     * Construit un gestionnaire d'ï¿½vï¿½nements pour un serveur.
      *
-     * @param serveur Serveur Le serveur pour lequel ce gestionnaire gère des événements
+     * @param serveur Serveur Le serveur pour lequel ce gestionnaire gï¿½re des ï¿½vï¿½nements
      */
     public GestionnaireEvenementServeur(Serveur serveur) {
         this.serveur = serveur;
     }
 
     /**
-     * Méthode de gestion d'événements. Cette méthode contiendra le code qui gère les réponses obtenues d'un client.
+     * Mï¿½thode de gestion d'ï¿½vï¿½nements. Cette mï¿½thode contiendra le code qui gï¿½re les rï¿½ponses obtenues d'un client.
      *
-     * @param evenement L'événement à gérer.
+     * @param evenement L'ï¿½vï¿½nement ï¿½ gï¿½rer.
      */
     @Override
     public void traiter(Evenement evenement) {
@@ -50,16 +53,16 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
             String argument = evenement.getArgument();
 
             switch (typeEvenement) {
-                case "EXIT": //Ferme la connexion avec le client qui a envoyé "EXIT":
+                case "EXIT": //Ferme la connexion avec le client qui a envoyï¿½ "EXIT":
                     cnx.envoyer("END");
                     serveur.enlever(cnx);
                     cnx.close();
                     break;
-                case "LIST": //Envoie la liste des alias des personnes connectées :
+                case "LIST": //Envoie la liste des alias des personnes connectï¿½es :
                     cnx.envoyer("LIST " + serveur.list());
                     break;
 
-                //Ajoutez ici d’autres case pour gérer d’autres commandes.
+                //Ajoutez ici dï¿½autres case pour gï¿½rer dï¿½autres commandes.
                 case "MSG":
                     serveur.envoyerATousSauf(argument, aliasExpediteur);
                     serveur.ajouterHistorique(aliasExpediteur + ">>" + argument);
@@ -99,7 +102,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     for(int i = 0; i < serveur.connectes.size(); ++i) {
                         Connexion connexion = serveur.connectes.elementAt(i);
                         if(connexion.getAlias().equals(argument)) {
-                            connexion.envoyer(aliasExpediteur + " à refusé votre invitation de chat privé.");
+                            connexion.envoyer(aliasExpediteur + " Ã  refusÃ© votre invitation");
                         }
                     }
 
@@ -107,7 +110,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
 
                 case "INV":
-                    String liste = "Utilisateurs qui vous ont invités: \n";
+                    String liste = "Utilisateurs qui vous ont invitï¿½s: \n";
                     for(int i = 0; i < this.invitations.size(); ++i) {
                         if(this.invitations.get(i).getAliasInvite().equals(aliasExpediteur)) {
                             liste += (this.invitations.get(i).getAliasHote() + "\n");
@@ -121,8 +124,8 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     String[] arguments = argument.split(" ");
 
                     if(!arguments[0].equals(aliasExpediteur)) {
-                        for(int i = 0; i < this.invitations.size(); ++i) {
-                            if((this.invitations.get(i).getAliasHote().equals(aliasExpediteur) && this.invitations.get(i).getAliasInvite().equals(arguments[0])) || this.invitations.get(i).getAliasHote().equals(arguments[0]) && this.invitations.get(i).getAliasInvite().equals(aliasExpediteur)) {
+                        for(int i = 0; i < this.salonsPrives.size(); ++i) {
+                            if((this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur) && this.salonsPrives.get(i).getAliasInvite().equals(arguments[0])) || this.salonsPrives.get(i).getAliasHote().equals(arguments[0]) && this.salonsPrives.get(i).getAliasInvite().equals(aliasExpediteur)) {
                                 for(int j = 0; j < serveur.connectes.size(); ++j) {
                                     Connexion connexion = serveur.connectes.elementAt(j);
                                     if(connexion.getAlias().equals(arguments[0])) {
@@ -154,7 +157,49 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     }
 
 
+                case "CHESS":
+                    // inviter argument Ã  jouer une partie d'Ã©chec.
+                    // sert aussi Ã  alias1 Ã  accepter une invitation de alias 2
+
+                    if(invitationDejaEnvoye(argument, aliasExpediteur)) {
+                        for(int i = 0; i < this.salonsPrives.size(); ++i) {
+                            if(this.salonsPrives.get(i).getAliasHote().equals(argument) || this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur)) {
+                                this.salonsPrives.get(i).setPartieEchecs(new PartieEchecs());
+                                this.salonsPrives.get(i).getPartieEchecs().setAliasJoueur1(argument);
+                                this.salonsPrives.get(i).getPartieEchecs().setAliasJoueur2(aliasExpediteur);
+
+                                for(int j = 0; j < serveur.connectes.size(); ++j) {
+                                     Connexion connexion = serveur.connectes.elementAt(j);
+                                     
+                                     if(connexion.getAlias().equals(aliasExpediteur)) {
+
+                                        connexion.envoyer("CHESSOK " + this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur2());
+                                     }
+                                     if(connexion.getAlias().equals(argument)) {
+
+                                        connexion.envoyer("CHESSOK " + this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1());
+                                     }
+                                 }
+
+                            }
+                        }
+                        
+                    }
+                    else {
+                        boolean existe = false;
+                        for(int i = 0; i < this.invitations.size(); ++i) {
+                            if(this.invitations.get(i).getAliasHote().equals(aliasExpediteur) && this.invitations.get(i).getAliasInvite().equals(argument)) {
+                                existe = true;
+                            }
+                        }
+                        if(!existe) {
+                            this.invitations.add(new Invitation(aliasExpediteur, argument));
+                            envoyerInvitation(aliasExpediteur, argument);
+                        }
+
+                    }
                     break;
+
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();
                     cnx.envoyer(msg);
@@ -166,6 +211,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
         if(this.invitations.size() > 0) {
             for(int i = 0; i < this.invitations.size(); ++i) {
                 if(this.invitations.get(i).getAliasHote().equals(aliasHote) && this.invitations.get(i).getAliasInvite().equals(aliasInvite)) {
+                    this.invitations.remove(i);
                     return true;
                 }
             }
@@ -177,7 +223,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
         for(int i = 0; i < serveur.connectes.size(); ++i) {
             Connexion connexion = serveur.connectes.elementAt(i);
             if(connexion.getAlias().equals(aliasInvite)) {
-                connexion.envoyer(aliasExpediteur + " vous invite dans un salon privé. Pour accepter, écrivez: JOIN " + aliasExpediteur + " ou DECLINE pour refuser ");
+                connexion.envoyer(aliasExpediteur + " vous invite dans un salon privï¿½. Pour accepter, ï¿½crivez: JOIN " + aliasExpediteur + " ou DECLINE pour refuser ");
             }
         }
     }

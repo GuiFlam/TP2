@@ -17,6 +17,12 @@ public class EtatPartieEchecs {
     }
 
     public EtatPartieEchecs() {
+        for(int i = 0; i < etatEchiquier.length; ++i) {
+            for(int j = 0; j < etatEchiquier[0].length; ++j) {
+                etatEchiquier[i][j] = ' ';
+            }
+        }
+
         // Tours
         etatEchiquier[0][0] = 'T';
         etatEchiquier[7][0] = 'T';
@@ -77,5 +83,6 @@ public class EtatPartieEchecs {
                 }
             }
         }
+        return etat;
     }
 }

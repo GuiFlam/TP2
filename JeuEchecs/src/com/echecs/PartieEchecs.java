@@ -43,6 +43,11 @@ public class PartieEchecs {
     public PartieEchecs() {
         echiquier = new Piece[8][8];
 
+        char couleurJoueur1 = ((int)(Math.random()*2)+1) == 1 ? 'b' : 'n';
+        char couleurJoueur2 = Character.compare(couleurJoueur1, 'b') == 0 ? 'n' : 'b';
+        this.couleurJoueur1 = couleurJoueur1;
+        this.couleurJoueur2 = couleurJoueur2; 
+                                         
         tour = 'b';
         //Placement des pièces :
 
@@ -193,7 +198,7 @@ public class PartieEchecs {
      */
     public char estEnEchec() {
             
-        char caractère = 'e';
+        char caractere = 'e';
         // Pour chacune des pièces de l'adversaire, si peutsedeplacer à la position du roi est vrai, le roi est en echec. 
         Position positionRoiBlanc = null;
         Position positionRoiNoir = null;
@@ -209,15 +214,15 @@ public class PartieEchecs {
                         }
                     }
                     if (echiquier[i][j].peutSeDeplacer(new Position((char)(i + 65), (byte)j), positionRoiBlanc, echiquier)) {
-                        caractère = 'b';
+                        caractere = 'b';
                     }
                     else if (echiquier[i][j].peutSeDeplacer(new Position((char)(i + 65), (byte)j), positionRoiNoir, echiquier)) {
-                        caractère = 'n';
+                        caractere = 'n';
                     }
                 } 
             }
         }
-        return caractère;
+        return caractere;
     }
     /**
      * Retourne la couleur n ou b du joueur qui a la main.

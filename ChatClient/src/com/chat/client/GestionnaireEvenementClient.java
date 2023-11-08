@@ -34,6 +34,7 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
         Connexion cnx;
         String typeEvenement, arg;
         String[] membres;
+        ClientChat clientChat = (ClientChat)client;
 
         if (source instanceof Connexion) {
             cnx = (Connexion) source;
@@ -49,6 +50,11 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     for (String s:membres)
                         System.out.println("\t\t\t- "+s);
                     break;
+
+                case "CHESSOK":
+                    System.out.println("Une nouvelle partie est créée");
+                    clientChat.nouvellePartie();
+                    System.out.println(clientChat.getEtatPartieEchecs());
                 default: //Afficher le texte recu :
                     System.out.println("\t\t\t."+evenement.getType()+" "+evenement.getArgument());
             }
