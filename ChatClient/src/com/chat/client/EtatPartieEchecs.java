@@ -55,31 +55,29 @@ public class EtatPartieEchecs {
     }
     private void placerPions(int ligne) {
         int colonne = 0;
-        for(int i = 0; i <= ligne; ++i) {
-            etatEchiquier[colonne++][i] = ligne == 1 ? 'P' : 'p';
+        for(int i = 0; i <= 7; ++i) {
+            etatEchiquier[colonne++][ligne] = ligne == 1 ? 'P' : 'p';
         }
     }
     @Override
     public String toString() {
         String etat = "";
         int ligne;
-        int lettre = 65;
+        int colonne = 65;
 
-        for(ligne = 8; ligne <= 0; --ligne) {
-            if(ligne != 8 && ligne != 0) {
-                etat += "\n";
+        for(ligne = 7; ligne >= 0; --ligne) {
+            etat += ligne + 1;
+            etat += " ";
+            for(colonne = 0; colonne <= 7; ++colonne) {
+                etat += etatEchiquier[colonne][ligne];
+                etat += " ";
             }
-            if(ligne > 0) {
-                etat += ligne + " ";
-                for(int i = 0; i < etatEchiquier[0].length; ++i) {
-                  etat += etatEchiquier[lettre-65][ligne] + i == etatEchiquier[0].length-1 ? "" : " ";
-                }
-            }
-            else {
+            etat += "\n";
+            if(ligne == 0) {
                 etat += "  ";
-                for(int i = 0; i < etatEchiquier[0].length; ++i) {
-                  etat += (char)lettre + i == etatEchiquier[0].length-1 ? "" : " ";
-                  lettre++;
+                for(colonne = 0; colonne <= 7; ++colonne) {
+                    etat += Character.toLowerCase((char)(colonne+65));
+                    etat += " ";
                 }
             }
         }

@@ -15,7 +15,7 @@ public class Roi extends Piece
 
         if(pos1.estVoisineDe(pos2))
         {
-            return  true;
+            return true;
         }
 
         return false;

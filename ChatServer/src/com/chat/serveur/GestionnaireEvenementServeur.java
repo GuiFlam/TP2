@@ -45,7 +45,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
         String msg, typeEvenement, aliasExpediteur;
         ServeurChat serveur = (ServeurChat) this.serveur;
 
-        if (source instanceof Connexion) {
+        if (source  instanceof Connexion) {
             cnx = (Connexion) source;
             System.out.println("SERVEUR-Recu : " + evenement.getType() + " " + evenement.getArgument());
             typeEvenement = evenement.getType();

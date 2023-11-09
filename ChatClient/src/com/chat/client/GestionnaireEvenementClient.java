@@ -52,9 +52,17 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     break;
 
                 case "CHESSOK":
-                    System.out.println("Une nouvelle partie est créée");
+                    System.out.println("Une nouvelle partie est creer\n");
                     clientChat.nouvellePartie();
                     System.out.println(clientChat.getEtatPartieEchecs());
+
+
+
+
+                    break;
+
+
+
                 default: //Afficher le texte recu :
                     System.out.println("\t\t\t."+evenement.getType()+" "+evenement.getArgument());
             }
