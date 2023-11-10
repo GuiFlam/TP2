@@ -6,6 +6,7 @@ import com.chat.commun.evenement.Evenement;
 import com.chat.commun.evenement.GestionnaireEvenement;
 import com.chat.commun.net.Connexion;
 import com.echecs.PartieEchecs;
+import com.echecs.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,6 +166,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         for(int i = 0; i < this.salonsPrives.size(); ++i) {
                             if(this.salonsPrives.get(i).getAliasHote().equals(argument) || this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur)) {
                                 this.salonsPrives.get(i).setPartieEchecs(new PartieEchecs());
+
                                 this.salonsPrives.get(i).getPartieEchecs().setAliasJoueur1(argument);
                                 this.salonsPrives.get(i).getPartieEchecs().setAliasJoueur2(aliasExpediteur);
 
@@ -198,6 +200,45 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         }
 
                     }
+                    break;
+
+                case "MOVE":
+                    char[] message = argument.toCharArray();
+                    Position posInitiale = new Position(message[0], (byte)((int)(message[1])-49));
+                    Position posFinale = new Position(message[2], (byte)((int)(message[3])-49));
+
+
+                    for(int i = 0; i < this.salonsPrives.size(); i++) {
+                        if(this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur) || this.salonsPrives.get(i).getAliasInvite().equals(aliasExpediteur)) {
+                            //System.out.println(this.salonsPrives.get(i).getPartieEchecs());
+
+                            if(this.salonsPrives.get(i).getPartieEchecs().deplace(posInitiale, posFinale)) {
+                                this.salonsPrives.get(i).getPartieEchecs().changerTour();
+                                for(int j = 0; j < serveur.connectes.size(); ++j) {
+                                    Connexion connexion = serveur.connectes.elementAt(j);
+                                    if(connexion.getAlias().equals(this.salonsPrives.get(i).getAliasHote()) || connexion.getAlias().equals(this.salonsPrives.get(i).getAliasInvite())) {
+
+                                        char tour = this.salonsPrives.get(i).getPartieEchecs().getTour();
+                                        String aliasJoueurActuel = tour == this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
+                                        connexion.envoyer("MOVE " + argument + " " + aliasJoueurActuel + " " + tour);
+                                    }
+                                }
+                            }
+                            else {
+                                for(int j = 0; j < serveur.connectes.size(); ++j) {
+                                    Connexion connexion = serveur.connectes.elementAt(j);
+
+                                    if(connexion.getAlias().equals(this.salonsPrives.get(i).getAliasHote()) || connexion.getAlias().equals(this.salonsPrives.get(i).getAliasInvite())) {
+
+                                        connexion.envoyer("INVALID");
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+
                     break;
 
                 default: //Renvoyer le texte recu convertit en majuscules :

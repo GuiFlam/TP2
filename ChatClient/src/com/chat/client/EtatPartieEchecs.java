@@ -69,7 +69,7 @@ public class EtatPartieEchecs {
             etat += ligne + 1;
             etat += " ";
             for(colonne = 0; colonne <= 7; ++colonne) {
-                etat += etatEchiquier[colonne][ligne];
+                etat += etatEchiquier[colonne][ligne] == ' ' ? '.' : etatEchiquier[colonne][ligne];
                 etat += " ";
             }
             etat += "\n";

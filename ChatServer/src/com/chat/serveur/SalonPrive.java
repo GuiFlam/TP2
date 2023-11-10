@@ -11,7 +11,6 @@ public class SalonPrive {
         this.aliasInvite = aliasInvite;
     }
 
-
     public void setPartieEchecs(PartieEchecs partieEchecs) {
         this.partieEchecs = partieEchecs;
     }

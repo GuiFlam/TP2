@@ -3,6 +3,7 @@ package com.chat.client;
 import com.chat.commun.evenement.Evenement;
 import com.chat.commun.evenement.GestionnaireEvenement;
 import com.chat.commun.net.Connexion;
+import com.echecs.Position;
 
 /**
  * Cette classe représente un gestionnaire d'événement d'un client. Lorsqu'un client reçoit un texte d'un serveur,
@@ -52,15 +53,48 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     break;
 
                 case "CHESSOK":
-                    System.out.println("Une nouvelle partie est creer\n");
+                    System.out.print("Une nouvelle partie est creer, vous etes ");
+                    System.out.println(Character.compare(evenement.getArgument().toCharArray()[0], 'b') == 0 ? "les BLANCS\n" : "les NOIRS\n");
                     clientChat.nouvellePartie();
                     System.out.println(clientChat.getEtatPartieEchecs());
+                    break;
 
+                case "MOVE":
+                    arg = evenement.getArgument();
+                    String[] arguments = arg.split(" ");
+                    char[] positions = arguments[0].toCharArray();
+                    char piece = ' ';
+                    Position posInitiale = new Position(positions[0], (byte)((int)(positions[1])-49));
+                    Position posFinale = new Position(positions[2], (byte)((int)(positions[3])-49));
 
+                    EtatPartieEchecs etatPartieEchecs = clientChat.getEtatPartieEchecs();
+
+                    for(int i = 0; i < etatPartieEchecs.getEtatEchiquier().length; ++i) {
+                        for(int j = 0; j < etatPartieEchecs.getEtatEchiquier()[0].length; ++j) {
+                            if (i == posInitiale.getLigne() && j == (int)posInitiale.getColonne() - 97) {
+                                piece = etatPartieEchecs.getEtatEchiquier()[j][i];
+                                etatPartieEchecs.getEtatEchiquier()[j][i] = ' ';
+                            }
+                        }
+                    }
+                    for(int i = 0; i < etatPartieEchecs.getEtatEchiquier().length; ++i) {
+                        for(int j = 0; j < etatPartieEchecs.getEtatEchiquier()[0].length; ++j) {
+                            if (i == posFinale.getLigne() && j == (int)posFinale.getColonne() - 97) {
+                                etatPartieEchecs.getEtatEchiquier()[j][i] = piece;
+                            }
+                        }
+                    }
+
+                    clientChat.setEtatPartieEchecs(etatPartieEchecs);
+                    System.out.println();
+                    System.out.println("C'est au tour de: " + arguments[1] + "(" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
+                    System.out.println("---------------------------------");
+                    System.out.println(clientChat.getEtatPartieEchecs());
+                    System.out.println("---------------------------------");
+                    System.out.println("Entrez MOVE xxyy pour faire un deplacement:");
 
 
                     break;
-
 
 
                 default: //Afficher le texte recu :

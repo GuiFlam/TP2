@@ -24,11 +24,13 @@ public class Pion extends Piece
         else if(Character.compare(couleur, 'b') == 0    && 
         Math.abs((int)pos1.getColonne() - (int)pos2.getColonne()) == 1  && 
         pos2.getLigne() - pos1.getLigne() == 1) {
+            // et que case pas nulle
             return true;
         }
         else if(Character.compare(couleur, 'n') == 0    && 
                 Math.abs((int)pos1.getColonne() - (int)pos2.getColonne()) == 1  && 
                 pos1.getLigne() - pos2.getLigne() == 1) {
+            // et que case pas nulle
             return true;
         }
         return false;

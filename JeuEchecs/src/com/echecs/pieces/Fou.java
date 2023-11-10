@@ -23,10 +23,10 @@ public class Fou extends Piece
         int incrementX = depX > 0 ? 1 : -1;
         int incrementY = depY > 0 ? 1 : -1;
 
-        int colonne = (int)pos1.getColonne()-65 + incrementX;
+        int colonne = (int)pos1.getColonne()-97 + incrementX;
         int ligne = pos1.getLigne() + incrementY;
 
-        while(colonne != (int)pos2.getColonne()-65)
+        while(colonne != (int)pos2.getColonne()-97)
         {
             if(echiquier[colonne][ligne] != null)
             {

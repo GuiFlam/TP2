@@ -22,7 +22,7 @@ public class Dame extends Piece
 
             while(ligne != pos2.getLigne())
             {
-                if(echiquier[(int)pos1.getColonne()-65][ligne] != null)
+                if(echiquier[(int)pos1.getColonne()-97][ligne] != null)
                 {
                     return false;
                 }
@@ -32,9 +32,9 @@ public class Dame extends Piece
         }
         else if(pos1.estSurLaMemeLigneQue(pos2))                //Deplacement horizontale
         {
-            int colonne = (int)pos1.getColonne()-65 + incrementX;
+            int colonne = (int)pos1.getColonne()-97 + incrementX;
 
-            while(colonne != (int)pos2.getColonne()-65)
+            while(colonne != (int)pos2.getColonne()-97)
             {
                 if(echiquier[colonne][pos1.getLigne()] != null)
                 {
@@ -46,10 +46,10 @@ public class Dame extends Piece
         }
         else if(pos1.estSurLaMemeDiagonaleQue(pos2))           //Deplacement diagonale
         {
-            int colonne = (int)pos1.getColonne()-65 + incrementX;
+            int colonne = (int)pos1.getColonne()-97 + incrementX;
             int ligne = pos1.getLigne() + incrementY;
 
-            while(colonne != (int)pos2.getColonne()-65)
+            while(colonne != (int)pos2.getColonne()-97)
             {
                 if(echiquier[colonne][ligne] != null)
                 {
