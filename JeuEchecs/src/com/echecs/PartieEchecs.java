@@ -133,6 +133,8 @@ public class PartieEchecs {
         System.out.println((int)finale.getColonne());
         System.out.println(finale.getLigne());
 
+        System.out.println(echiquier[(int)initiale.getColonne()-97][initiale.getLigne()]);
+
         if(estLigneValide(initiale) && estLigneValide(finale) && estColonneValide(initiale) && estColonneValide(finale)) {
             System.out.println("test lf1");
             if(estUnePiece(initiale)) {
@@ -153,6 +155,7 @@ public class PartieEchecs {
                     System.out.println("ON EST RENDU ICI #3");
                     if(Character.compare(couleurPieceInitiale, couleurPieceFinale) != 0 || Character.compare(couleurPieceInitiale, ' ') == 0) {
                         System.out.println("ON EST RENDU ICI #4");
+                        /*
                         if(Character.compare(tour, 'b') == 0 && !roiBlancBouge) {
                             if((int)finale.getColonne() - (int)initiale.getColonne() == 2) {
                                 // roque avec tour de droite
@@ -193,14 +196,14 @@ public class PartieEchecs {
                                 }
                             }
                         }
-
+                        */
                         if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()].peutSeDeplacer(initiale, finale, echiquier)) {
+                            System.out.println("PEUT SE DEPLACER");
                             Piece piece = echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()];
                             echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] = null;
                             echiquier[(int)finale.getColonne()-97][(int)finale.getLigne()] = piece;
                             return true;
                         }
-
                     }
                 }
             }

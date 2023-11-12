@@ -212,6 +212,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         posInitiale = new Position(message[0], (byte)((int)(message[1])-49));
                         posFinale = new Position(message[3], (byte)((int)(message[4])-49));
                     }
+                    System.out.println("Longueur message: " + message.length);
 
                     for(int i = 0; i < this.salonsPrives.size(); i++) {
                         if(this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur) || this.salonsPrives.get(i).getAliasInvite().equals(aliasExpediteur)) {
@@ -226,6 +227,8 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                                         char tour = this.salonsPrives.get(i).getPartieEchecs().getTour();
                                         String aliasJoueurActuel = tour == this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
                                         connexion.envoyer("MOVE " + argument + " " + aliasJoueurActuel + " " + tour);
+
+                                        /*
                                         if(this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'b' || this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'n') {
                                             String aliasJoueurEchec = "";
                                             if(this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() == 'b') {
@@ -236,9 +239,22 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                                             }
                                             connexion.envoyer("ECHEC " + aliasJoueurEchec);
                                             if(this.salonsPrives.get(i).getPartieEchecs().echecEtMat() == this.salonsPrives.get(i).getPartieEchecs().estEnEchec()) {
-                                                connexion.envoyer("MAT " + (aliasJoueurEchec.equals(this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()) ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()));
+                                                connexion.envoyer("MAT" + " " +(aliasJoueurEchec.equals(this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()) ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()));
+                                                // Arreter partie
+                                                for(int k = 0; k < salonsPrives.size(); ++k) {
+                                                    for(int u = 0; u < serveur.connectes.size(); ++u) {
+                                                        Connexion connex = serveur.connectes.elementAt(u);
+
+                                                        if(connex.getAlias().equals(this.salonsPrives.get(k).getAliasHote()) || connex.getAlias().equals(this.salonsPrives.get(k).getAliasInvite())) {
+
+                                                            salonsPrives.get(k).setPartieEchecs(null);
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
+                                        */
+
                                     }
                                 }
                             }
@@ -261,6 +277,17 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                 case "ABANDON":
 
+                    for(int i = 0; i < salonsPrives.size(); ++i) {
+                        for(int j = 0; j < serveur.connectes.size(); ++j) {
+                            Connexion connexion = serveur.connectes.elementAt(j);
+
+                            if(connexion.getAlias().equals(this.salonsPrives.get(i).getAliasHote()) || connexion.getAlias().equals(this.salonsPrives.get(i).getAliasInvite())) {
+
+                                salonsPrives.get(i).setPartieEchecs(null);
+                                connexion.envoyer("ABANDON" + " " + aliasExpediteur);
+                            }
+                        }
+                    }
 
 
 

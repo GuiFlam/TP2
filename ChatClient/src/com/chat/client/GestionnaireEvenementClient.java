@@ -102,9 +102,16 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     System.out.println("---------------------------------");
                     System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
 
-
                     break;
 
+                case "MAT":
+                    clientChat.setEtatPartieEchecs(null);
+                    break;
+                case "ABANDON":
+                    clientChat.setEtatPartieEchecs(null);
+                    String[] message = evenement.getArgument().split(" ");
+                    System.out.println(message[1] + " à abandonné la partie d'échecs");
+                    break;
 
                 default: //Afficher le texte recu :
                     System.out.println("\t\t\t."+evenement.getType()+" "+evenement.getArgument());
