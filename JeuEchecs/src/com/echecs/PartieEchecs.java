@@ -257,6 +257,49 @@ public class PartieEchecs {
         }
         return caractere;
     }
+    public char echecEtMat() {
+        char caractere = 'e';
+        // Pour chacune des pièces de l'adversaire, si peutsedeplacer à la position du roi est vrai, le roi est en echec.
+        Piece roiNoir = null;
+        Piece roiBland = null;
+        Position positionRoiBlanc = null;
+        Position positionRoiNoir = null;
+        boolean roiNoirEchecMat = true;
+        boolean roiBlancEchecMat = true;
+
+        if(estEnEchec() == 'n' || estEnEchec() == 'b') {
+            for(int i = 0; i < echiquier.length; ++i) {
+                for(int j = 0; j < echiquier[0].length; ++j) {
+                    if (echiquier[i][j] != null) {
+                        if(echiquier[i][j] instanceof Roi) {
+                            if(Character.compare(echiquier[i][j].getCouleur(),'b') == 0) {
+                                roiBland = echiquier[i][j];
+                                positionRoiBlanc = new Position(((char)(i + 97)), (byte)j);
+                            }
+                            else {
+                                roiNoir = echiquier[i][j];
+                                positionRoiNoir = new Position(((char)(i + 97)), (byte)j);
+                            }
+                        }
+                    }
+                }
+            }
+            for(int i = 0; i < echiquier.length; ++i) {
+                for(int j = 0; j < echiquier[0].length; ++j) {
+                    if (echiquier[i][j] != null) {
+                        if(roiBland.peutSeDeplacer(positionRoiBlanc, new Position((char)(i + 97), (byte)j), echiquier)) {
+                            roiBlancEchecMat = false;
+                        }
+                        if(roiNoir.peutSeDeplacer(positionRoiNoir, new Position((char)(i + 97), (byte)j), echiquier)) {
+                            roiNoirEchecMat = false;
+                        }
+                    }
+                }
+            }
+            return roiBlancEchecMat ? 'b' : 'n';
+        }
+        return caractere;
+    }
     /**
      * Retourne la couleur n ou b du joueur qui a la main.
      *

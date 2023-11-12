@@ -64,8 +64,17 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     String[] arguments = arg.split(" ");
                     char[] positions = arguments[0].toCharArray();
                     char piece = ' ';
-                    Position posInitiale = new Position(positions[0], (byte)((int)(positions[1])-49));
-                    Position posFinale = new Position(positions[2], (byte)((int)(positions[3])-49));
+                    Position posInitiale = null;
+                    Position posFinale = null;
+
+                    if(positions.length == 4) {
+                        posInitiale = new Position(positions[0], (byte)((int)(positions[1])-49));
+                        posFinale = new Position(positions[2], (byte)((int)(positions[3])-49));
+                    }
+                    else if(positions.length == 5) {
+                        posInitiale = new Position(positions[0], (byte)((int)(positions[1])-49));
+                        posFinale = new Position(positions[3], (byte)((int)(positions[4])-49));
+                    }
 
                     EtatPartieEchecs etatPartieEchecs = clientChat.getEtatPartieEchecs();
 
@@ -87,11 +96,11 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
 
                     clientChat.setEtatPartieEchecs(etatPartieEchecs);
                     System.out.println();
-                    System.out.println("C'est au tour de: " + arguments[1] + "(" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
+                    System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
                     System.out.println("---------------------------------");
                     System.out.println(clientChat.getEtatPartieEchecs());
                     System.out.println("---------------------------------");
-                    System.out.println("Entrez MOVE xxyy pour faire un deplacement:");
+                    System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
 
 
                     break;
