@@ -134,7 +134,9 @@ public class PartieEchecs {
         System.out.println(finale.getLigne());
 
         if(estLigneValide(initiale) && estLigneValide(finale) && estColonneValide(initiale) && estColonneValide(finale)) {
+            System.out.println("test lf1");
             if(estUnePiece(initiale)) {
+                System.out.println("test lf2");
                 char couleurPieceInitiale = echiquier[(int)initiale.getColonne() - 97][(int)initiale.getLigne()].getCouleur();
 
                 System.out.println("ON EST RENDU ICI #1");
@@ -207,7 +209,7 @@ public class PartieEchecs {
     }
 
     private boolean estLigneValide(Position ligne) {
-        return ligne.getLigne() > 0 && ligne.getLigne() < 9;
+        return ligne.getLigne() >= 0 && ligne.getLigne() < 9;
     }
     private boolean estColonneValide(Position colonne) {
         return (int)colonne.getColonne() > 96 && (int)colonne.getColonne() < 105;
