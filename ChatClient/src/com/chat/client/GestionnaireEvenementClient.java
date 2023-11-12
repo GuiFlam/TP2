@@ -56,25 +56,45 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     System.out.print("Une nouvelle partie est creer, vous etes ");
                     System.out.println(Character.compare(evenement.getArgument().toCharArray()[0], 'b') == 0 ? "les BLANCS\n" : "les NOIRS\n");
                     clientChat.nouvellePartie();
+
+                    System.out.println();
+                    System.out.println("---------------------------------");
                     System.out.println(clientChat.getEtatPartieEchecs());
+                    System.out.println("---------------------------------");
+                    System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
                     break;
 
                 case "MOVE":
                     arg = evenement.getArgument();
                     String[] arguments = arg.split(" ");
-                    char[] positions = arguments[0].toCharArray();
-                    char piece = ' ';
-                    Position posInitiale = null;
-                    Position posFinale = null;
 
-                    if(positions.length == 4) {
-                        posInitiale = new Position(positions[0], (byte)((int)(positions[1])-49));
-                        posFinale = new Position(positions[2], (byte)((int)(positions[3])-49));
+                    Position posInitiale;
+                    Position posFinale;
+
+                    if(arguments[0].length() == 2 && arguments[1].length() == 2) {
+                        posInitiale = new Position(arguments[0].toCharArray()[0], (byte)((int)(arguments[0].toCharArray()[1])-49));
+                        posFinale = new Position(arguments[1].toCharArray()[0], (byte)((int)(arguments[1].toCharArray()[1])-49));
                     }
-                    else if(positions.length == 5) {
-                        posInitiale = new Position(positions[0], (byte)((int)(positions[1])-49));
-                        posFinale = new Position(positions[3], (byte)((int)(positions[4])-49));
+                    else {
+                        if(arguments[0].length() == 4) {
+                            posInitiale = new Position(arguments[0].toCharArray()[0], (byte)((int)(arguments[0].toCharArray()[1])-49));
+                            posFinale = new Position(arguments[0].toCharArray()[2], (byte)((int)(arguments[0].toCharArray()[3])-49));
+                        }
+                        else {
+                            posInitiale = new Position(arguments[0].toCharArray()[0], (byte)((int)(arguments[0].toCharArray()[1])-49));
+                            posFinale = new Position(arguments[0].toCharArray()[3], (byte)((int)(arguments[0].toCharArray()[4])-49));
+                        }
                     }
+
+
+
+
+
+
+
+                    char piece = ' ';
+
+
 
                     EtatPartieEchecs etatPartieEchecs = clientChat.getEtatPartieEchecs();
 

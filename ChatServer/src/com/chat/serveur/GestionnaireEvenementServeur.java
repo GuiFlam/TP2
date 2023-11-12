@@ -75,7 +75,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     break;
 
                 case "JOIN":
-                    if(invitationDejaEnvoye(argument, aliasExpediteur)) {
+                    if(invitationDejaEnvoye(argument, aliasExpediteur, "JOIN")) {
                         salonsPrives.add(new SalonPrive(argument, aliasExpediteur));
                     }
                     else {
@@ -86,8 +86,9 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             }
                         }
                         if(!existe) {
-                            this.invitations.add(new Invitation(aliasExpediteur, argument));
-                            envoyerInvitation(aliasExpediteur, argument);
+                            Invitation invitation = new Invitation(aliasExpediteur, argument, "JOIN");
+                            this.invitations.add(invitation);
+                            envoyerInvitation(invitation);
                         }
 
                     }
@@ -161,7 +162,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                 case "CHESS":
                     // inviter argument à jouer une partie d'échec.
                     // sert aussi à alias1 à accepter une invitation de alias 2
-
+                    if(invitationDejaEnvoye(argument, aliasExpediteur, "CHESS"))
                         for(int i = 0; i < this.salonsPrives.size(); ++i) {
                             if(this.salonsPrives.get(i).getAliasHote().equals(argument) || this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur)) {
                                 this.salonsPrives.get(i).setPartieEchecs(new PartieEchecs());
@@ -186,6 +187,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                         
                     }
+                    else {
                         boolean existe = false;
                         for(int i = 0; i < this.invitations.size(); ++i) {
                             if(this.invitations.get(i).getAliasHote().equals(aliasExpediteur) && this.invitations.get(i).getAliasInvite().equals(argument)) {
@@ -193,26 +195,40 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             }
                         }
                         if(!existe) {
-                            this.invitations.add(new Invitation(aliasExpediteur, argument));
-                            envoyerInvitation(aliasExpediteur, argument);
+                            Invitation invitation = new Invitation(aliasExpediteur, argument, "CHESS");
+                            this.invitations.add(invitation);
+                            envoyerInvitation(invitation);
                         }
+                    }
 
 
                     break;
 
                 case "MOVE":
-                    char[] message = argument.toCharArray();
-                    Position posInitiale = null;
-                    Position posFinale = null;
-                    if(message.length == 4) {
-                        posInitiale = new Position(message[0], (byte)((int)(message[1])-49));
-                        posFinale = new Position(message[2], (byte)((int)(message[3])-49));
+                    Position posInitiale;
+                    Position posFinale;
+                    String[] deplacement = argument.split(" ");
+
+                    if(deplacement.length > 1) {
+                        posInitiale = new Position(deplacement[0].toCharArray()[0], (byte)((int)(deplacement[0].toCharArray()[1])-49));
+                        posFinale = new Position(deplacement[1].toCharArray()[0], (byte)((int)(deplacement[1].toCharArray()[1])-49));
                     }
-                    else if(message.length == 5) {
-                        posInitiale = new Position(message[0], (byte)((int)(message[1])-49));
-                        posFinale = new Position(message[3], (byte)((int)(message[4])-49));
+                    else {
+                        if(argument.length() == 4) {
+                            posInitiale = new Position(argument.toCharArray()[0], (byte)((int)(argument.toCharArray()[1])-49));
+                            posFinale = new Position(argument.toCharArray()[2], (byte)((int)(argument.toCharArray()[3])-49));
+                        }
+                        else {
+                            posInitiale = new Position(argument.toCharArray()[0], (byte)((int)(argument.toCharArray()[1])-49));
+                            posFinale = new Position(argument.toCharArray()[3], (byte)((int)(argument.toCharArray()[4])-49));
+                        }
                     }
-                    System.out.println("Longueur message: " + message.length);
+
+
+
+
+
+
 
                     for(int i = 0; i < this.salonsPrives.size(); i++) {
                         if(this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur) || this.salonsPrives.get(i).getAliasInvite().equals(aliasExpediteur)) {
@@ -226,7 +242,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                                         char tour = this.salonsPrives.get(i).getPartieEchecs().getTour();
                                         String aliasJoueurActuel = tour == this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
-                                        connexion.envoyer("MOVE " + argument + " " + aliasJoueurActuel + " " + tour);
+                                        connexion.envoyer("MOVE" + " " + argument + " " + aliasJoueurActuel + " " + tour);
 
                                         /*
                                         if(this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'b' || this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'n') {
@@ -299,11 +315,10 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
         }
     }
 
-    private boolean invitationDejaEnvoye(String aliasHote, String aliasInvite) {
+    private boolean invitationDejaEnvoye(String aliasHote, String aliasInvite, String mode) {
         if(this.invitations.size() > 0) {
             for(int i = 0; i < this.invitations.size(); ++i) {
-                if(this.invitations.get(i).getAliasHote().equals(aliasHote) && this.invitations.get(i).getAliasInvite().equals(aliasInvite)) {
-                    this.invitations.remove(i);
+                if(this.invitations.get(i).getAliasHote().equals(aliasHote) && this.invitations.get(i).getAliasInvite().equals(aliasInvite) && this.invitations.get(i).getMode().equals(mode)) {
                     return true;
                 }
             }
@@ -311,11 +326,16 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
         return false;
     }
 
-    private void envoyerInvitation(String aliasExpediteur, String aliasInvite) {
+    private void envoyerInvitation(Invitation invitation) {
         for(int i = 0; i < serveur.connectes.size(); ++i) {
             Connexion connexion = serveur.connectes.elementAt(i);
-            if(connexion.getAlias().equals(aliasInvite)) {
-                connexion.envoyer(aliasExpediteur + " vous invite dans un salon priv�. Pour accepter, �crivez: JOIN " + aliasExpediteur + " ou DECLINE pour refuser ");
+            if(connexion.getAlias().equals(invitation.getAliasInvite())) {
+                if(invitation.getMode().equals("JOIN")) {
+                    connexion.envoyer(invitation.getAliasHote() + " vous invite dans un salon priv�. Pour accepter, �crivez: JOIN " + invitation.getAliasHote() + " ou DECLINE pour refuser ");
+                }
+                else {
+                    connexion.envoyer(invitation.getAliasHote() + " vous invite a jouer une partie d'echecs. Pour accepter, �crivez: CHESS " + invitation.getAliasHote() + " ou DECLINE pour refuser ");
+                }
             }
         }
     }
