@@ -9,28 +9,30 @@ public class Pion extends Piece
     }
     @Override
     public boolean peutSeDeplacer(Position pos1, Position pos2, Piece[][] echiquier) {
-        if(Character.compare(couleur, 'b') == 0 && pos1.getLigne() == 1 && pos2.getLigne() - pos1.getLigne() <= 2) {
+        if(couleur == 'b' && pos1.getLigne() == 1 && pos2.getLigne() - pos1.getLigne() <= 2) {        //Move depart Blancs
             return true;
         }
-        else if(Character.compare(couleur, 'n') == 0 && pos1.getLigne() == 6 && pos1.getLigne() - pos2.getLigne() <= 2) {
+        else if(couleur == 'n' && pos1.getLigne() == 6 && pos1.getLigne() - pos2.getLigne() <= 2) {       //Move depart Noirs
             return true;
         }
-        else if(Character.compare(couleur, 'b') == 0 && pos2.getLigne() - pos1.getLigne() == 1    && Character.compare(pos1.getColonne(), pos2.getColonne()) == 0) {
+        else if(Math.abs(pos2.getLigne() - pos1.getLigne()) == 1 && pos1.getColonne() == pos2.getColonne()      //Mouvement verticale standard
+                && echiquier[(int)pos2.getColonne()-97][pos2.getLigne()] == null) {
             return true;
         }
-        else if(Character.compare(couleur, 'n') == 0 && pos1.getLigne() - pos2.getLigne() == 1    && Character.compare(pos1.getColonne(), pos2.getColonne()) == 0) {
+        else if(Math.abs((int)pos2.getColonne() - (int)pos1.getColonne()) == 1  && Math.abs(pos2.getLigne() - pos1.getLigne()) == 1
+                && echiquier[(int)pos2.getColonne()-97][pos2.getLigne()] != null) {     //Capturer
             return true;
         }
-        else if(Character.compare(couleur, 'b') == 0    && 
-        Math.abs((int)pos1.getColonne() - (int)pos2.getColonne()) == 1  && 
-        pos2.getLigne() - pos1.getLigne() == 1) {
-            // et que case pas nulle
+        else if(couleur == 'b' && Math.abs(pos2.getLigne() - pos1.getLigne()) == 1 && pos2.getLigne() == 7     //Promotion reine Blancs
+                && pos1.getColonne() == pos2.getColonne() && echiquier[(int)pos2.getColonne()-97][pos2.getLigne()] == null){
+            echiquier[(int)pos2.getColonne()-97][pos2.getLigne()] = null;
+            echiquier[(int)pos2.getColonne()-97][pos2.getLigne()] = new Dame('b');
             return true;
         }
-        else if(Character.compare(couleur, 'n') == 0    && 
-                Math.abs((int)pos1.getColonne() - (int)pos2.getColonne()) == 1  && 
-                pos1.getLigne() - pos2.getLigne() == 1) {
-            // et que case pas nulle
+        else if(couleur == 'n' && Math.abs(pos2.getLigne() - pos1.getLigne()) == 1 && pos2.getLigne() == 0     //Promotion reine Noirs
+                && pos1.getColonne() == pos2.getColonne() && echiquier[(int)pos2.getColonne()-97][pos2.getLigne()] == null){
+            echiquier[(int)pos2.getColonne()-97][pos2.getLigne()] = null;
+            echiquier[(int)pos2.getColonne()-97][pos2.getLigne()] = new Dame('n');
             return true;
         }
         return false;

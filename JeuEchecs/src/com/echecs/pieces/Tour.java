@@ -50,40 +50,4 @@ public class Tour extends Piece
 
         return false;
     }
-
-    /*
-    @Override
-    public boolean peutSeDeplacer(Position pos1, Position pos2, Piece[][] echiquier)
-    {
-        if(pos1.estSurLaMemeColonneQue(pos2))                  //Deplacement verticale (Sont sur la meme colonne)
-        {
-            for(int i = pos1.getLigne() < pos2.getLigne() ? pos1.getLigne() + 1 : pos1.getLigne() - 1;
-                    pos1.getLigne() < pos2.getLigne() ? i < pos2.getLigne() : i > pos2.getLigne();
-                    i = pos1.getLigne() < pos2.getLigne() ? i + 1 : i - 1)
-            {
-                if(echiquier[(int)pos1.getColonne()-65][i] != null)             //Passe a travers toute les lignes qui les separe, s'il y a une piece
-                {                                                               //deplacement non permis
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        if(pos1.estSurLaMemeLigneQue(pos2))                  //Deplacement horizontale (Sont sur la meme ligne)
-        {
-            for(int i = pos1.getColonne() < pos2.getColonne() ? ((int)pos1.getColonne()-65) + 1 : ((int)pos1.getColonne()-65) - 1;
-                pos1.getColonne() < pos2.getColonne() ? i < (int)pos2.getColonne()-65 : i > (int)pos2.getColonne()-65;
-                i = pos1.getColonne() < pos2.getColonne() ? i + 1 : i - 1)
-            {
-                if(echiquier[i][pos1.getLigne()] != null)                          //Passe a travers toute les colonnes qui les separe, s'il y a une piece
-                {                                                                  //deplacement non permis
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        return false;
-    }
-     */
 }

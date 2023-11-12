@@ -10,7 +10,7 @@ public class Roi extends Piece
     public boolean peutSeDeplacer(Position pos1, Position pos2, Piece[][] echiquier)
     {
         //Deplacement en X et Y
-        int depX = pos2.getColonne() - pos1.getColonne();
+        int depX = (int)pos2.getColonne() - (int)pos1.getColonne();
         int depY = pos2.getLigne() - pos1.getLigne();
 
         if(pos1.estVoisineDe(pos2))
