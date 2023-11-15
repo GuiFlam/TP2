@@ -1,9 +1,6 @@
 package com.chat.client;
 
-import com.echecs.pieces.Cavalier;
-import com.echecs.pieces.Fou;
-import com.echecs.pieces.Pion;
-import com.echecs.pieces.Tour;
+import com.echecs.pieces.*;
 
 public class EtatPartieEchecs {
     private char[][] etatEchiquier = new char[8][8];

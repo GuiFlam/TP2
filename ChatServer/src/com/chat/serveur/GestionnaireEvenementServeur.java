@@ -244,7 +244,9 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                                         String aliasJoueurActuel = tour == this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
                                         connexion.envoyer("MOVE" + " " + argument + " " + aliasJoueurActuel + " " + tour);
 
-                                        /*
+
+
+                                        System.out.println("est en echec: " + this.salonsPrives.get(i).getPartieEchecs().estEnEchec());
                                         if(this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'b' || this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'n') {
                                             String aliasJoueurEchec = "";
                                             if(this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() == 'b') {
@@ -253,7 +255,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                                             else {
                                                 aliasJoueurEchec = this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
                                             }
-                                            connexion.envoyer("ECHEC " + aliasJoueurEchec);
+                                            connexion.envoyer("ECHEC" + aliasJoueurEchec);
                                             if(this.salonsPrives.get(i).getPartieEchecs().echecEtMat() == this.salonsPrives.get(i).getPartieEchecs().estEnEchec()) {
                                                 connexion.envoyer("MAT" + " " +(aliasJoueurEchec.equals(this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()) ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()));
                                                 // Arreter partie
@@ -269,7 +271,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                                                 }
                                             }
                                         }
-                                        */
+
 
                                     }
                                 }

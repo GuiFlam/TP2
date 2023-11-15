@@ -42,6 +42,13 @@ public class Main {
 		}while (!"EXIT".equals(saisie));
 		//Lorsque le client envoie "EXIT", le serveur répond "END." et le gestionnaire d'événement déconnecte le client
 
+
 		//client.deconnecter();
+	}
+	public static boolean chat(float grandeur, int age) {
+		return grandeur > 10;
+	}
+	public static boolean chat(int age, float grandeur) {
+		return grandeur > 10;
 	}
 }

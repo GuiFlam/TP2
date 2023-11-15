@@ -4,6 +4,9 @@ import com.chat.commun.evenement.Evenement;
 import com.chat.commun.evenement.GestionnaireEvenement;
 import com.chat.commun.net.Connexion;
 import com.echecs.Position;
+import com.echecs.pieces.Dame;
+import com.echecs.pieces.Pion;
+import com.echecs.pieces.Roi;
 
 /**
  * Cette classe représente un gestionnaire d'événement d'un client. Lorsqu'un client reçoit un texte d'un serveur,
@@ -94,9 +97,45 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
 
                     char piece = ' ';
 
-
-
                     EtatPartieEchecs etatPartieEchecs = clientChat.getEtatPartieEchecs();
+
+                    // PROMOTION
+                    if(etatPartieEchecs.getEtatEchiquier()[(int)posInitiale.getColonne() - 97][(int)posInitiale.getLigne()] == 'P') {
+                        if((posFinale.getLigne() == 7)) {
+                            etatPartieEchecs.getEtatEchiquier()[(int) posInitiale.getColonne() - 97][posInitiale.getLigne()] = ' ';
+                            etatPartieEchecs.getEtatEchiquier()[(int) posFinale.getColonne() - 97][posFinale.getLigne()] = 'D';
+                            clientChat.setEtatPartieEchecs(etatPartieEchecs);
+                            System.out.println();
+                            System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
+                            System.out.println("---------------------------------");
+                            System.out.println(clientChat.getEtatPartieEchecs());
+                            System.out.println("---------------------------------");
+                            System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
+                            break;
+                        }
+                    }
+                    else if(etatPartieEchecs.getEtatEchiquier()[(int)posInitiale.getColonne() - 97][(int)posInitiale.getLigne()] == 'p') {
+                        if((posFinale.getLigne() == 0)) {
+                            etatPartieEchecs.getEtatEchiquier()[(int) posInitiale.getColonne() - 97][posInitiale.getLigne()] = ' ';
+                            etatPartieEchecs.getEtatEchiquier()[(int) posFinale.getColonne() - 97][posFinale.getLigne()] = 'd';
+                            clientChat.setEtatPartieEchecs(etatPartieEchecs);
+                            System.out.println();
+                            System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
+                            System.out.println("---------------------------------");
+                            System.out.println(clientChat.getEtatPartieEchecs());
+                            System.out.println("---------------------------------");
+                            System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
+                            break;
+                        }
+                    }
+
+
+
+
+
+
+
+
 
                     for(int i = 0; i < etatPartieEchecs.getEtatEchiquier().length; ++i) {
                         for(int j = 0; j < etatPartieEchecs.getEtatEchiquier()[0].length; ++j) {
@@ -124,6 +163,10 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
 
                     break;
 
+
+                case "ECHEC":
+                    System.out.println("ECHEC " + evenement.getArgument());
+                    break;
                 case "MAT":
                     clientChat.setEtatPartieEchecs(null);
                     break;
