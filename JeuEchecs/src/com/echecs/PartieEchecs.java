@@ -129,12 +129,7 @@ public class PartieEchecs {
         // A la position finale il n'y a pas une piece de la meme couleur
         // Roque: Si le roi ou la tour a bougé on ne peut pas.
 
-        System.out.println((int)initiale.getColonne());
-        System.out.println(initiale.getLigne());
-        System.out.println((int)finale.getColonne());
-        System.out.println(finale.getLigne());
 
-        System.out.println(echiquier[(int)initiale.getColonne()-97][initiale.getLigne()]);
 
         if(estLigneValide(initiale) && estLigneValide(finale) && estColonneValide(initiale) && estColonneValide(finale)) {
             System.out.println("test lf1");
@@ -142,9 +137,7 @@ public class PartieEchecs {
                 System.out.println("test lf2");
                 char couleurPieceInitiale = echiquier[(int)initiale.getColonne() - 97][(int)initiale.getLigne()].getCouleur();
 
-                System.out.println("ON EST RENDU ICI #1");
-                System.out.println("Couleur piece initiale: " + couleurPieceInitiale);
-                System.out.println("Tour: " + tour);
+
 
                 if(Character.compare(couleurPieceInitiale, tour) == 0) {
                     System.out.println("ON EST RENDU ICI #1.5");
@@ -218,6 +211,7 @@ public class PartieEchecs {
 
                         if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()].peutSeDeplacer(initiale, finale, echiquier)) {
                             System.out.println("PEUT SE DEPLACER");
+
                             Piece piece = echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()];
                             echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] = null;
                             echiquier[(int)finale.getColonne()-97][(int)finale.getLigne()] = piece;
@@ -252,7 +246,6 @@ public class PartieEchecs {
      * si le roi blanc est en échec, tout autre caractère, sinon.
      */
     public char estEnEchec() {
-            
         char caractere = ' ';
         // Pour chacune des pièces de l'adversaire, si peutsedeplacer à la position du roi est vrai, le roi est en echec. 
         Position positionRoiBlanc = null;

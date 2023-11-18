@@ -232,65 +232,46 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                     for(int i = 0; i < this.salonsPrives.size(); i++) {
                         if(this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur) || this.salonsPrives.get(i).getAliasInvite().equals(aliasExpediteur)) {
-                            //System.out.println(this.salonsPrives.get(i).getPartieEchecs());
+                            if(this.salonsPrives.get(i).getPartieEchecs() != null) {
+                                if (this.salonsPrives.get(i).getPartieEchecs().deplace(posInitiale, posFinale)) {
+                                    this.salonsPrives.get(i).getPartieEchecs().changerTour();
+                                    String mat = "e";
+                                    for (int j = 0; j < serveur.connectes.size(); ++j) {
+                                        Connexion connexion = serveur.connectes.elementAt(j);
+                                        if (connexion.getAlias().equals(this.salonsPrives.get(i).getAliasHote()) || connexion.getAlias().equals(this.salonsPrives.get(i).getAliasInvite())) {
 
-                            if(this.salonsPrives.get(i).getPartieEchecs().deplace(posInitiale, posFinale)) {
-                                this.salonsPrives.get(i).getPartieEchecs().changerTour();
-                                for(int j = 0; j < serveur.connectes.size(); ++j) {
-                                    Connexion connexion = serveur.connectes.elementAt(j);
-                                    if(connexion.getAlias().equals(this.salonsPrives.get(i).getAliasHote()) || connexion.getAlias().equals(this.salonsPrives.get(i).getAliasInvite())) {
+                                            char tour = this.salonsPrives.get(i).getPartieEchecs().getTour();
+                                            String aliasJoueurActuel = tour == this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
+                                            String aliasJoueurEchec = "e";
 
-                                        char tour = this.salonsPrives.get(i).getPartieEchecs().getTour();
-                                        String aliasJoueurActuel = tour == this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
-                                        connexion.envoyer("MOVE" + " " + argument + " " + aliasJoueurActuel + " " + tour);
+                                            if (this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'b') {
 
+                                                aliasJoueurEchec = this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() == 'b' ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
 
-
-                                        System.out.println("est en echec: " + this.salonsPrives.get(i).getPartieEchecs().estEnEchec());
-                                        if(this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'b' || this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'n') {
-                                            String aliasJoueurEchec = "";
-                                            if(this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() == 'b') {
-                                                aliasJoueurEchec = this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1();
-                                            }
-                                            else {
-                                                aliasJoueurEchec = this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
-                                            }
-                                            connexion.envoyer("ECHEC" + aliasJoueurEchec);
-                                            if(this.salonsPrives.get(i).getPartieEchecs().echecEtMat() == this.salonsPrives.get(i).getPartieEchecs().estEnEchec()) {
-                                                connexion.envoyer("MAT" + " " +(aliasJoueurEchec.equals(this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()) ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()));
-                                                // Arreter partie
-                                                for(int k = 0; k < salonsPrives.size(); ++k) {
-                                                    for(int u = 0; u < serveur.connectes.size(); ++u) {
-                                                        Connexion connex = serveur.connectes.elementAt(u);
-
-                                                        if(connex.getAlias().equals(this.salonsPrives.get(k).getAliasHote()) || connex.getAlias().equals(this.salonsPrives.get(k).getAliasInvite())) {
-
-                                                            salonsPrives.get(k).setPartieEchecs(null);
-                                                        }
-                                                    }
+                                                if (this.salonsPrives.get(i).getPartieEchecs().echecEtMat() == this.salonsPrives.get(i).getPartieEchecs().estEnEchec()) {
+                                                    mat = aliasJoueurEchec.equals(this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()) ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1();
                                                 }
                                             }
+
+                                            connexion.envoyer("MOVE" + " " + argument + " " + aliasJoueurActuel + " " + tour + " " + aliasJoueurEchec + " " + mat);
                                         }
-
-
                                     }
-                                }
-                            }
-                            else {
-                                for(int j = 0; j < serveur.connectes.size(); ++j) {
-                                    Connexion connexion = serveur.connectes.elementAt(j);
+                                    if (!mat.equals("e")) {
+                                        this.salonsPrives.get(i).setPartieEchecs(null);
+                                    }
+                                } else {
+                                    for (int j = 0; j < serveur.connectes.size(); ++j) {
+                                        Connexion connexion = serveur.connectes.elementAt(j);
 
-                                    if(connexion.getAlias().equals(this.salonsPrives.get(i).getAliasHote()) || connexion.getAlias().equals(this.salonsPrives.get(i).getAliasInvite())) {
+                                        if (connexion.getAlias().equals(this.salonsPrives.get(i).getAliasHote()) || connexion.getAlias().equals(this.salonsPrives.get(i).getAliasInvite())) {
 
-                                        connexion.envoyer("INVALID");
+                                            connexion.envoyer("INVALID");
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-
-
-
                     break;
 
                 case "ABANDON":

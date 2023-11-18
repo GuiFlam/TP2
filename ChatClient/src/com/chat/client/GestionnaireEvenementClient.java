@@ -67,6 +67,10 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
                     break;
 
+                case "ECHEC":
+                    System.out.println("ECHEC pour le joueur");
+                    break;
+
                 case "MOVE":
                     arg = evenement.getArgument();
                     String[] arguments = arg.split(" ");
@@ -130,13 +134,6 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     }
 
 
-
-
-
-
-
-
-
                     for(int i = 0; i < etatPartieEchecs.getEtatEchiquier().length; ++i) {
                         for(int j = 0; j < etatPartieEchecs.getEtatEchiquier()[0].length; ++j) {
                             if (i == posInitiale.getLigne() && j == (int)posInitiale.getColonne() - 97) {
@@ -160,20 +157,26 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     System.out.println(clientChat.getEtatPartieEchecs());
                     System.out.println("---------------------------------");
                     System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
+                    System.out.println();
+                    System.out.println(arguments[3].equals("e") ? "" : arguments[3] + " est en echec!!!");
+                    if(!arguments[4].equals("e")) {
+                        System.out.println("PARTIE TERMINEE");
+                        System.out.println(arguments[4] + " a gagner!!!");
+                    }
 
                     break;
 
 
-                case "ECHEC":
-                    System.out.println("ECHEC " + evenement.getArgument());
-                    break;
+
+
                 case "MAT":
                     clientChat.setEtatPartieEchecs(null);
                     break;
+
                 case "ABANDON":
                     clientChat.setEtatPartieEchecs(null);
                     String[] message = evenement.getArgument().split(" ");
-                    System.out.println(message[1] + " à abandonné la partie d'échecs");
+                    System.out.println(message[0] + " à abandonné la partie d'échecs");
                     break;
 
                 default: //Afficher le texte recu :
