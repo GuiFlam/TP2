@@ -164,52 +164,115 @@ public class PartieEchecs {
                             }
                         }
 
-                        // ROQUE
-                            /*
-                        if(Character.compare(tour, 'b') == 0 && !roiBlancBouge && echiquier[(int)initiale.getColonne() - 97][(int)initiale.getLigne()] instanceof Roi) {
-                            if((int)finale.getColonne() - (int)initiale.getColonne() == 2) {
-                                // roque avec tour de droite
-                                if(!tour2BlancBouge) {
-                                    // ROQUE
-                                    echiquier[1][6] = echiquier[1][7];
-                                    echiquier[1][7] = echiquier[1][4];
-                                    return true;
+                        
+                        if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] instanceof Roi)
+                        {
+                            if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()].getCouleur() == 'b')   //BLANCS
+                            {
+                                if((int)finale.getColonne() - (int)initiale.getColonne() == 2) //Droite
+                                {
+                                    if(echiquier[(int)initiale.getColonne()-96][initiale.getLigne()] == null && echiquier[(int)initiale.getColonne()-95][initiale.getLigne()] == null &&
+                                            !tour2BlancBouge && !roiBlancBouge)
+                                    {
+                                        Piece tmp = echiquier[7][0];        //Tour
+                                        echiquier[7][0] = null;
+                                        echiquier[5][0] = tmp;
+
+                                        tmp = echiquier[4][0];              //Roi
+                                        echiquier[4][0] = null;
+                                        echiquier[6][0] = tmp;
+                                    }
+                                }
+                                else if((int)finale.getColonne() - (int)initiale.getColonne() == -2)                                                     //Gauche
+                                {
+                                    if(echiquier[(int)initiale.getColonne()-98][initiale.getLigne()] == null && echiquier[(int)initiale.getColonne()-99][initiale.getLigne()] == null &&
+                                            echiquier[(int)initiale.getColonne()-100][initiale.getLigne()] == null && !tour1BlancBouge && !roiBlancBouge)
+                                    {
+                                        Piece tmp = echiquier[0][0];        //Tour
+                                        echiquier[0][0] = null;
+                                        echiquier[3][0] = tmp;
+
+                                        tmp = echiquier[4][0];              //Roi
+                                        echiquier[4][0] = null;
+                                        echiquier[2][0] = tmp;
+                                    }
                                 }
                             }
-                            else if ((int)finale.getColonne() - (int)initiale.getColonne() == -2) {
-                                // roque avec tour de gauche
-                                if(!tour1BlancBouge) {
-                                    // ROQUE
-                                    echiquier[1][2] = echiquier[1][0];
-                                    echiquier[1][0] = echiquier[1][4];
-                                    return true;
+                            else                                                        //NOIR
+                            {
+                                if((int)finale.getColonne() - (int)initiale.getColonne() == 2) //Droite
+                                {
+                                    if(echiquier[(int)initiale.getColonne()-96][initiale.getLigne()] == null && echiquier[(int)initiale.getColonne()-95][initiale.getLigne()] == null &&
+                                            !tour2BlancBouge && !roiBlancBouge)
+                                    {
+                                        Piece tmp = echiquier[7][7];        //Tour
+                                        echiquier[7][7] = null;
+                                        echiquier[5][7] = tmp;
+
+                                        tmp = echiquier[4][7];              //Roi
+                                        echiquier[4][7] = null;
+                                        echiquier[6][7] = tmp;
+                                    }
+                                }
+                                else if((int)finale.getColonne() - (int)initiale.getColonne() == -2)                                                     //Gauche
+                                {
+                                    if(echiquier[(int)initiale.getColonne()-98][initiale.getLigne()] == null && echiquier[(int)initiale.getColonne()-99][initiale.getLigne()] == null &&
+                                            echiquier[(int)initiale.getColonne()-100][initiale.getLigne()] == null && !tour1BlancBouge && !roiBlancBouge)
+                                    {
+                                        Piece tmp = echiquier[0][7];        //Tour
+                                        echiquier[0][7] = null;
+                                        echiquier[3][7] = tmp;
+
+                                        tmp = echiquier[4][7];              //Roi
+                                        echiquier[4][7] = null;
+                                        echiquier[2][7] = tmp;
+                                    }
                                 }
                             }
                         }
-                        else if (!roiNoirBouge && echiquier[(int)initiale.getColonne() - 97][(int)initiale.getLigne()] instanceof Roi){
-                            if((int)finale.getColonne() - (int)initiale.getColonne() == 2) {
-                                // roque avec tour de droite
-                                if(!tour2NoirBouge) {
-                                    // ROQUE
-                                    echiquier[7][6] = echiquier[7][7];
-                                    echiquier[7][7] = echiquier[7][4];
-                                    return true;
-                                }
-                            }
-                            else if ((int)finale.getColonne() - (int)initiale.getColonne() == -2) {
-                                // roque avec tour de gauche
-                                if(!tour1NoirBouge) {
-                                    // ROQUE
-                                    echiquier[7][2] = echiquier[7][0];
-                                    echiquier[7][0] = echiquier[7][4];
-                                    return true;
-                                }
-                            }
-                        }
-                        */
-
-
                         if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()].peutSeDeplacer(initiale, finale, echiquier)) {
+                            if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] instanceof Roi)
+                            {
+                                if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()].getCouleur() == 'b')
+                                {
+                                    if(!roiBlancBouge)
+                                    {
+                                        roiBlancBouge = true;
+                                    }
+                                }
+                                else if(!roiNoirBouge)
+                                {
+                                    roiNoirBouge = true;
+                                }
+                            }
+
+                            if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] instanceof Tour)
+                            {
+                                if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()].getCouleur() == 'b')
+                                {
+                                    if (!tour1BlancBouge && (int) initiale.getColonne() - 97 == 0 && initiale.getLigne() == 0)
+                                    {
+                                        tour1BlancBouge = true;
+                                    }
+                                    else if(!tour2BlancBouge && (int) initiale.getColonne() - 97 == 7 && initiale.getLigne() == 0)
+                                    {
+                                        tour2BlancBouge = true;
+                                    }
+                                }
+                                else
+                                {
+                                    if(!tour1NoirBouge && (int) initiale.getColonne() - 97 == 0 && initiale.getLigne() == 7)
+                                    {
+                                        tour1NoirBouge = true;
+                                    }
+                                    else if(!tour2NoirBouge && (int) initiale.getColonne() - 97 == 7 && initiale.getLigne() == 7)
+                                    {
+                                        tour2NoirBouge = true;
+                                    }
+                                }
+                            }
+
+
                             System.out.println("PEUT SE DEPLACER");
 
                             Piece piece = echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()];

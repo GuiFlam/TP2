@@ -224,12 +224,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         }
                     }
 
-
-
-
-
-
-
                     for(int i = 0; i < this.salonsPrives.size(); i++) {
                         if(this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur) || this.salonsPrives.get(i).getAliasInvite().equals(aliasExpediteur)) {
                             if(this.salonsPrives.get(i).getPartieEchecs() != null) {
