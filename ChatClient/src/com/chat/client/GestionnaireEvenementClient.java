@@ -5,6 +5,7 @@ import com.chat.commun.evenement.GestionnaireEvenement;
 import com.chat.commun.net.Connexion;
 import com.echecs.Position;
 import com.echecs.pieces.Dame;
+import com.echecs.pieces.Piece;
 import com.echecs.pieces.Pion;
 import com.echecs.pieces.Roi;
 
@@ -65,10 +66,6 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     System.out.println(clientChat.getEtatPartieEchecs());
                     System.out.println("---------------------------------");
                     System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
-                    break;
-
-                case "ECHEC":
-                    System.out.println("ECHEC pour le joueur");
                     break;
 
                 case "MOVE":
@@ -133,6 +130,50 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                         }
                     }
 
+                    // ROQUE
+                    if(etatPartieEchecs.getEtatEchiquier()[(int)posInitiale.getColonne()-97][(int)posInitiale.getLigne()] == 'R' || etatPartieEchecs.getEtatEchiquier()[(int)posInitiale.getColonne()-97][(int)posInitiale.getLigne()] == 'r' )
+                    {
+                            if((int)posFinale.getColonne() - (int)posInitiale.getColonne() == 2) //Droite
+                            {
+                                char tmp = etatPartieEchecs.getEtatEchiquier()[7][posFinale.getLigne()];        //Tour
+                                char tmp2 = etatPartieEchecs.getEtatEchiquier()[4][posFinale.getLigne()];
+
+
+                                etatPartieEchecs.getEtatEchiquier()[7][posFinale.getLigne()] = ' ';
+                                etatPartieEchecs.getEtatEchiquier()[5][posFinale.getLigne()] = tmp;
+                                         //Roi
+                                System.out.println("Valeur de la piece temp: " + tmp);
+                                etatPartieEchecs.getEtatEchiquier()[4][posFinale.getLigne()] = ' ';
+                                etatPartieEchecs.getEtatEchiquier()[6][posFinale.getLigne()] = tmp2;
+
+                            }
+                            else if((int)posFinale.getColonne() - (int)posInitiale.getColonne() == -2)                                                     //Gauche
+                            {
+                                char tmp = etatPartieEchecs.getEtatEchiquier()[0][posFinale.getLigne()];        //Tour
+                                etatPartieEchecs.getEtatEchiquier()[0][posFinale.getLigne()] = ' ';
+                                etatPartieEchecs.getEtatEchiquier()[3][posFinale.getLigne()] = tmp;
+
+                                tmp = etatPartieEchecs.getEtatEchiquier()[4][posFinale.getLigne()];              //Roi
+                                etatPartieEchecs.getEtatEchiquier()[4][posFinale.getLigne()] = ' ';
+                                etatPartieEchecs.getEtatEchiquier()[2][posFinale.getLigne()] = tmp;
+                            }
+                        clientChat.setEtatPartieEchecs(etatPartieEchecs);
+                        System.out.println();
+                        System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
+                        System.out.println("---------------------------------");
+                        System.out.println(clientChat.getEtatPartieEchecs());
+                        System.out.println("---------------------------------");
+                        System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
+                        System.out.println();
+                        System.out.println(arguments[3].equals("e") ? "" : arguments[3] + " est en echec!!!");
+                        if(!arguments[4].equals("e")) {
+                            System.out.println("PARTIE TERMINEE");
+                            System.out.println(arguments[4] + " a gagner!!!");
+                        }
+
+                        break;
+                    }
+
 
                     for(int i = 0; i < etatPartieEchecs.getEtatEchiquier().length; ++i) {
                         for(int j = 0; j < etatPartieEchecs.getEtatEchiquier()[0].length; ++j) {
@@ -165,9 +206,6 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     }
 
                     break;
-
-
-
 
                 case "MAT":
                     clientChat.setEtatPartieEchecs(null);

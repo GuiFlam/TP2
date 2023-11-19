@@ -81,7 +81,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     else {
                         boolean existe = false;
                         for(int i = 0; i < this.invitations.size(); ++i) {
-                            if(this.invitations.get(i).getAliasHote().equals(aliasExpediteur) && this.invitations.get(i).getAliasInvite().equals(argument)) {
+                            if(this.invitations.get(i).getAliasHote().equals(aliasExpediteur) && this.invitations.get(i).getAliasInvite().equals(argument) && this.invitations.get(i).getMode().equals("JOIN")) {
                                 existe = true;
                             }
                         }
@@ -190,7 +190,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     else {
                         boolean existe = false;
                         for(int i = 0; i < this.invitations.size(); ++i) {
-                            if(this.invitations.get(i).getAliasHote().equals(aliasExpediteur) && this.invitations.get(i).getAliasInvite().equals(argument)) {
+                            if(this.invitations.get(i).getAliasHote().equals(aliasExpediteur) && this.invitations.get(i).getAliasInvite().equals(argument) && this.invitations.get(i).getMode().equals("CHESS")) {
                                 existe = true;
                             }
                         }

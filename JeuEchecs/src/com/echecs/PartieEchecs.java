@@ -174,6 +174,8 @@ public class PartieEchecs {
                                     if(echiquier[(int)initiale.getColonne()-96][initiale.getLigne()] == null && echiquier[(int)initiale.getColonne()-95][initiale.getLigne()] == null &&
                                             !tour2BlancBouge && !roiBlancBouge)
                                     {
+
+
                                         Piece tmp = echiquier[7][0];        //Tour
                                         echiquier[7][0] = null;
                                         echiquier[5][0] = tmp;
@@ -181,6 +183,19 @@ public class PartieEchecs {
                                         tmp = echiquier[4][0];              //Roi
                                         echiquier[4][0] = null;
                                         echiquier[6][0] = tmp;
+
+                                        if(estEnEchec() == 'b') {
+                                            Piece piece = echiquier[5][0];        //Tour
+                                            echiquier[5][0] = null;
+                                            echiquier[7][0] = piece;
+
+                                            piece = echiquier[6][0];              //Roi
+                                            echiquier[6][0] = null;
+                                            echiquier[4][0] = piece;
+                                            return false;
+                                        }
+
+                                        return true;
                                     }
                                 }
                                 else if((int)finale.getColonne() - (int)initiale.getColonne() == -2)                                                     //Gauche
@@ -195,6 +210,19 @@ public class PartieEchecs {
                                         tmp = echiquier[4][0];              //Roi
                                         echiquier[4][0] = null;
                                         echiquier[2][0] = tmp;
+
+                                        Piece[][] board = echiquier;
+                                        if(echiquierEstEnEchec(board) == 'b') {
+                                            Piece piece = echiquier[3][0];        //Tour
+                                            echiquier[3][0] = null;
+                                            echiquier[0][0] = piece;
+
+                                            piece = echiquier[2][0];              //Roi
+                                            echiquier[2][0] = null;
+                                            echiquier[4][0] = piece;
+                                            return false;
+                                        }
+                                        return true;
                                     }
                                 }
                             }
@@ -203,7 +231,7 @@ public class PartieEchecs {
                                 if((int)finale.getColonne() - (int)initiale.getColonne() == 2) //Droite
                                 {
                                     if(echiquier[(int)initiale.getColonne()-96][initiale.getLigne()] == null && echiquier[(int)initiale.getColonne()-95][initiale.getLigne()] == null &&
-                                            !tour2BlancBouge && !roiBlancBouge)
+                                            !tour2NoirBouge && !roiNoirBouge)
                                     {
                                         Piece tmp = echiquier[7][7];        //Tour
                                         echiquier[7][7] = null;
@@ -212,12 +240,25 @@ public class PartieEchecs {
                                         tmp = echiquier[4][7];              //Roi
                                         echiquier[4][7] = null;
                                         echiquier[6][7] = tmp;
+
+                                        Piece[][] board = echiquier;
+                                        if(echiquierEstEnEchec(board) == 'n') {
+                                            Piece piece = echiquier[5][7];        //Tour
+                                            echiquier[5][7] = null;
+                                            echiquier[7][7] = piece;
+
+                                            piece = echiquier[6][7];              //Roi
+                                            echiquier[6][7] = null;
+                                            echiquier[4][7] = piece;
+                                            return false;
+                                        }
+                                        return true;
                                     }
                                 }
                                 else if((int)finale.getColonne() - (int)initiale.getColonne() == -2)                                                     //Gauche
                                 {
                                     if(echiquier[(int)initiale.getColonne()-98][initiale.getLigne()] == null && echiquier[(int)initiale.getColonne()-99][initiale.getLigne()] == null &&
-                                            echiquier[(int)initiale.getColonne()-100][initiale.getLigne()] == null && !tour1BlancBouge && !roiBlancBouge)
+                                            echiquier[(int)initiale.getColonne()-100][initiale.getLigne()] == null && !tour1NoirBouge && !roiNoirBouge)
                                     {
                                         Piece tmp = echiquier[0][7];        //Tour
                                         echiquier[0][7] = null;
@@ -226,10 +267,35 @@ public class PartieEchecs {
                                         tmp = echiquier[4][7];              //Roi
                                         echiquier[4][7] = null;
                                         echiquier[2][7] = tmp;
+
+                                        Piece[][] board = echiquier;
+                                        if(echiquierEstEnEchec(board) == 'n') {
+                                            Piece piece = echiquier[3][7];        //Tour
+                                            echiquier[3][7] = null;
+                                            echiquier[0][7] = piece;
+
+                                            piece = echiquier[2][7];              //Roi
+                                            echiquier[4][7] = null;
+                                            echiquier[4][7] = piece;
+                                            return false;
+                                        }
+                                        return true;
                                     }
                                 }
                             }
                         }
+
+
+
+
+
+
+
+
+
+
+
+
                         if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()].peutSeDeplacer(initiale, finale, echiquier)) {
                             if(echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] instanceof Roi)
                             {
@@ -275,6 +341,23 @@ public class PartieEchecs {
 
                             System.out.println("PEUT SE DEPLACER");
 
+
+
+                            if(couleurPieceInitiale == estEnEchec() || echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] instanceof Roi) {
+                                Piece[][] board = echiquier;
+                                Piece piece = board[(int)initiale.getColonne()-97][(int)initiale.getLigne()];
+                                board[(int)initiale.getColonne()-97][(int)initiale.getLigne()] = null;
+                                board[(int)finale.getColonne()-97][(int)finale.getLigne()] = piece;
+
+                                if(couleurPieceInitiale == echiquierEstEnEchec(board)) {
+                                    System.out.println("FALSE #1");
+                                    return false;
+                                }
+                                Piece temp = echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()];
+                                echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] = null;
+                                echiquier[(int)finale.getColonne()-97][(int)finale.getLigne()] = temp;
+                                return true;
+                            }
                             Piece piece = echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()];
                             echiquier[(int)initiale.getColonne()-97][(int)initiale.getLigne()] = null;
                             echiquier[(int)finale.getColonne()-97][(int)finale.getLigne()] = piece;
@@ -284,6 +367,7 @@ public class PartieEchecs {
                 }
             }
         }
+        System.out.println("FALSE #2");
         return false;
     }
 
@@ -314,7 +398,7 @@ public class PartieEchecs {
         Position positionRoiBlanc = null;
         Position positionRoiNoir = null;
         for(int i = 0; i < echiquier.length; ++i) {
-            for(int j = 0; j < echiquier[0].length; ++j) {
+            for(int j = 0; j < echiquier[i].length; ++j) {
                 if (echiquier[i][j] != null) {
                     if(echiquier[i][j] instanceof Roi) {
                         if(Character.compare(echiquier[i][j].getCouleur(),'b') == 0) {
@@ -328,7 +412,41 @@ public class PartieEchecs {
             }
         }
         for(int i = 0; i < echiquier.length; ++i) {
-            for (int j = 0; j < echiquier[0].length; ++j) {
+            for (int j = 0; j < echiquier[i].length; ++j) {
+                if (echiquier[i][j] != null) {
+                    if (echiquier[i][j].peutSeDeplacer(new Position((char)(i + 97), (byte)j), positionRoiBlanc, echiquier) && echiquier[i][j].getCouleur() == 'n') {
+                        caractere = 'b';
+                    }
+                    else if (echiquier[i][j].peutSeDeplacer(new Position((char)(i + 97), (byte)j), positionRoiNoir, echiquier)  && echiquier[i][j].getCouleur() == 'b') {
+                        caractere = 'n';
+                    }
+                }
+            }
+        }
+
+        return caractere;
+    }
+    private char echiquierEstEnEchec(Piece[][] echiquier) {
+        char caractere = ' ';
+        // Pour chacune des pièces de l'adversaire, si peutsedeplacer à la position du roi est vrai, le roi est en echec.
+        Position positionRoiBlanc = null;
+        Position positionRoiNoir = null;
+        for(int i = 0; i < echiquier.length; ++i) {
+            for(int j = 0; j < echiquier[i].length; ++j) {
+                if (echiquier[i][j] != null) {
+                    if(echiquier[i][j] instanceof Roi) {
+                        if(Character.compare(echiquier[i][j].getCouleur(),'b') == 0) {
+                            positionRoiBlanc = new Position((char)(i + 97), (byte)j);
+                        }
+                        else {
+                            positionRoiNoir = new Position((char)(i + 97), (byte)j);
+                        }
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < echiquier.length; ++i) {
+            for (int j = 0; j < echiquier[i].length; ++j) {
                 if (echiquier[i][j] != null) {
                     if (echiquier[i][j].peutSeDeplacer(new Position((char)(i + 97), (byte)j), positionRoiBlanc, echiquier) && echiquier[i][j].getCouleur() == 'n') {
                         caractere = 'b';
