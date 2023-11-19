@@ -53,7 +53,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
             aliasExpediteur = cnx.getAlias();
             String argument = evenement.getArgument();
 
-            switch (typeEvenement) {
+            switch (typeEvenement.toUpperCase()) {
                 case "EXIT": //Ferme la connexion avec le client qui a envoy� "EXIT":
                     cnx.envoyer("END");
                     serveur.enlever(cnx);
@@ -112,7 +112,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
 
                 case "INV":
-                    String liste = "Utilisateurs qui vous ont invit�s: \n";
+                    String liste = "Utilisateurs qui vous ont invites: \n";
                     for(int i = 0; i < this.invitations.size(); ++i) {
                         if(this.invitations.get(i).getAliasInvite().equals(aliasExpediteur)) {
                             liste += (this.invitations.get(i).getAliasHote() + "\n");
@@ -147,14 +147,19 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                 case "QUIT":
                     for(int i = 0; i < this.salonsPrives.size(); ++i) {
-                        if((this.invitations.get(i).getAliasHote().equals(aliasExpediteur) && this.invitations.get(i).getAliasInvite().equals(argument))) {
-                            this.salonsPrives.get(i).setAliasHote("");
-                        }
-                        else {
-                            this.salonsPrives.get(i).setAliasInvite("");
-                        }
-                        if(this.salonsPrives.get(i).getAliasHote().equals("") && this.salonsPrives.get(i).equals("")) {
+                        if((this.invitations.get(i).getAliasHote().equals(aliasExpediteur) || this.invitations.get(i).getAliasInvite().equals(aliasExpediteur))) {
                             this.salonsPrives.remove(i);
+                            for(int j = 0; j < serveur.connectes.size(); ++j) {
+                                Connexion connexion = serveur.connectes.elementAt(j);
+
+                                if(connexion.getAlias().equals(aliasExpediteur)) {
+                                    connexion.envoyer(aliasExpediteur + " a quitte le salon prive. le salon est terminé");
+                                }
+                                if(connexion.getAlias().equals(argument)) {
+
+                                    connexion.envoyer(argument + " a quitte le salon prive. le salon est terminé");
+                                }
+                            }
                         }
                     }
 
@@ -166,7 +171,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         for(int i = 0; i < this.salonsPrives.size(); ++i) {
                             if(this.salonsPrives.get(i).getAliasHote().equals(argument) || this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur)) {
                                 this.salonsPrives.get(i).setPartieEchecs(new PartieEchecs());
-
                                 this.salonsPrives.get(i).getPartieEchecs().setAliasJoueur1(argument);
                                 this.salonsPrives.get(i).getPartieEchecs().setAliasJoueur2(aliasExpediteur);
 
@@ -182,10 +186,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                                         connexion.envoyer("CHESSOK " + this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1());
                                      }
                                  }
-
                             }
-
-                        
                     }
                     else {
                         boolean existe = false;
@@ -246,7 +247,14 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                                                     mat = aliasJoueurEchec.equals(this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()) ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1();
                                                 }
                                             }
+                                            if (this.salonsPrives.get(i).getPartieEchecs().estEnEchec() == 'n') {
 
+                                                aliasJoueurEchec = this.salonsPrives.get(i).getPartieEchecs().getCouleurJoueur1() == 'n' ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2();
+
+                                                if (this.salonsPrives.get(i).getPartieEchecs().echecEtMat() == this.salonsPrives.get(i).getPartieEchecs().estEnEchec()) {
+                                                    mat = aliasJoueurEchec.equals(this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1()) ? this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur2() : this.salonsPrives.get(i).getPartieEchecs().getAliasJoueur1();
+                                                }
+                                            }
                                             connexion.envoyer("MOVE" + " " + argument + " " + aliasJoueurActuel + " " + tour + " " + aliasJoueurEchec + " " + mat);
                                         }
                                     }
@@ -281,10 +289,8 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             }
                         }
                     }
-
-
-
                     break;
+
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();
                     cnx.envoyer(msg);
@@ -296,6 +302,9 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
         if(this.invitations.size() > 0) {
             for(int i = 0; i < this.invitations.size(); ++i) {
                 if(this.invitations.get(i).getAliasHote().equals(aliasHote) && this.invitations.get(i).getAliasInvite().equals(aliasInvite) && this.invitations.get(i).getMode().equals(mode)) {
+                    if(this.invitations.get(i).getMode().equals("CHESS")) {
+                        this.invitations.remove(i);
+                    }
                     return true;
                 }
             }

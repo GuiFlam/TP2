@@ -7,8 +7,8 @@ public class SalonPrive {
     private PartieEchecs partieEchecs;
 
     public SalonPrive(String aliasHote, String aliasInvite) {
-        this.aliasHote = aliasHote;
-        this.aliasInvite = aliasInvite;
+        setAliasHote(aliasHote);
+        setAliasInvite(aliasInvite);
     }
 
     public void setPartieEchecs(PartieEchecs partieEchecs) {

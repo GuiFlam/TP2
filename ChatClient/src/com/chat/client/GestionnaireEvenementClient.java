@@ -106,12 +106,7 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                             etatPartieEchecs.getEtatEchiquier()[(int) posInitiale.getColonne() - 97][posInitiale.getLigne()] = ' ';
                             etatPartieEchecs.getEtatEchiquier()[(int) posFinale.getColonne() - 97][posFinale.getLigne()] = 'D';
                             clientChat.setEtatPartieEchecs(etatPartieEchecs);
-                            System.out.println();
-                            System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
-                            System.out.println("---------------------------------");
-                            System.out.println(clientChat.getEtatPartieEchecs());
-                            System.out.println("---------------------------------");
-                            System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
+                            ecrireEtatPartie(arguments, clientChat);
                             break;
                         }
                     }
@@ -120,12 +115,7 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                             etatPartieEchecs.getEtatEchiquier()[(int) posInitiale.getColonne() - 97][posInitiale.getLigne()] = ' ';
                             etatPartieEchecs.getEtatEchiquier()[(int) posFinale.getColonne() - 97][posFinale.getLigne()] = 'd';
                             clientChat.setEtatPartieEchecs(etatPartieEchecs);
-                            System.out.println();
-                            System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
-                            System.out.println("---------------------------------");
-                            System.out.println(clientChat.getEtatPartieEchecs());
-                            System.out.println("---------------------------------");
-                            System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
+                            ecrireEtatPartie(arguments, clientChat);
                             break;
                         }
                     }
@@ -137,8 +127,6 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                             {
                                 char tmp = etatPartieEchecs.getEtatEchiquier()[7][posFinale.getLigne()];        //Tour
                                 char tmp2 = etatPartieEchecs.getEtatEchiquier()[4][posFinale.getLigne()];
-
-
                                 etatPartieEchecs.getEtatEchiquier()[7][posFinale.getLigne()] = ' ';
                                 etatPartieEchecs.getEtatEchiquier()[5][posFinale.getLigne()] = tmp;
                                          //Roi
@@ -158,52 +146,29 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                                 etatPartieEchecs.getEtatEchiquier()[2][posFinale.getLigne()] = tmp;
                             }
                         clientChat.setEtatPartieEchecs(etatPartieEchecs);
-                        System.out.println();
-                        System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
-                        System.out.println("---------------------------------");
-                        System.out.println(clientChat.getEtatPartieEchecs());
-                        System.out.println("---------------------------------");
-                        System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
-                        System.out.println();
-                        System.out.println(arguments[3].equals("e") ? "" : arguments[3] + " est en echec!!!");
-                        if(!arguments[4].equals("e")) {
-                            System.out.println("PARTIE TERMINEE");
-                            System.out.println(arguments[4] + " a gagner!!!");
-                        }
+                        ecrireEtatPartie(arguments, clientChat);
 
                         break;
                     }
 
-
+                    int iFinal = 0;
+                    int jFinal = 0;
                     for(int i = 0; i < etatPartieEchecs.getEtatEchiquier().length; ++i) {
                         for(int j = 0; j < etatPartieEchecs.getEtatEchiquier()[0].length; ++j) {
                             if (i == posInitiale.getLigne() && j == (int)posInitiale.getColonne() - 97) {
                                 piece = etatPartieEchecs.getEtatEchiquier()[j][i];
                                 etatPartieEchecs.getEtatEchiquier()[j][i] = ' ';
                             }
-                        }
-                    }
-                    for(int i = 0; i < etatPartieEchecs.getEtatEchiquier().length; ++i) {
-                        for(int j = 0; j < etatPartieEchecs.getEtatEchiquier()[0].length; ++j) {
-                            if (i == posFinale.getLigne() && j == (int)posFinale.getColonne() - 97) {
-                                etatPartieEchecs.getEtatEchiquier()[j][i] = piece;
+                            if(i == posFinale.getLigne() && j == (int)posFinale.getColonne()-97) {
+                                iFinal = i;
+                                jFinal = j;
                             }
                         }
                     }
+                    etatPartieEchecs.getEtatEchiquier()[jFinal][iFinal] = piece;
 
                     clientChat.setEtatPartieEchecs(etatPartieEchecs);
-                    System.out.println();
-                    System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
-                    System.out.println("---------------------------------");
-                    System.out.println(clientChat.getEtatPartieEchecs());
-                    System.out.println("---------------------------------");
-                    System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
-                    System.out.println();
-                    System.out.println(arguments[3].equals("e") ? "" : arguments[3] + " est en echec!!!");
-                    if(!arguments[4].equals("e")) {
-                        System.out.println("PARTIE TERMINEE");
-                        System.out.println(arguments[4] + " a gagner!!!");
-                    }
+                    ecrireEtatPartie(arguments, clientChat);
 
                     break;
 
@@ -220,6 +185,20 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                 default: //Afficher le texte recu :
                     System.out.println("\t\t\t."+evenement.getType()+" "+evenement.getArgument());
             }
+        }
+    }
+    private void ecrireEtatPartie(String[] arguments, ClientChat clientChat) {
+        System.out.println();
+        System.out.println("C'est au tour de: " + arguments[1] + " (" + (arguments[2].equals("b") ? "Blancs" : "Noirs") + ")");
+        System.out.println("---------------------------------");
+        System.out.println(clientChat.getEtatPartieEchecs());
+        System.out.println("---------------------------------");
+        System.out.println("Entrez MOVE xxyy / xx-yy / xx yy pour faire un deplacement:");
+        System.out.println();
+        System.out.println(arguments[3].equals("e") ? "" : arguments[3] + " est en echec!!!");
+        if(!arguments[4].equals("e")) {
+            System.out.println("PARTIE TERMINEE");
+            System.out.println(arguments[4] + " a gagner!!!");
         }
     }
 }
