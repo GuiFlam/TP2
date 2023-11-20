@@ -86,9 +86,12 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             }
                         }
                         if(!existe) {
-                            Invitation invitation = new Invitation(aliasExpediteur, argument, "JOIN");
-                            this.invitations.add(invitation);
-                            envoyerInvitation(invitation);
+                            if(!aliasExpediteur.equals(argument)) {
+                                Invitation invitation = new Invitation(aliasExpediteur, argument, "JOIN");
+                                this.invitations.add(invitation);
+                                envoyerInvitation(invitation);
+                            }
+
                         }
 
                     }
@@ -196,9 +199,12 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             }
                         }
                         if(!existe) {
-                            Invitation invitation = new Invitation(aliasExpediteur, argument, "CHESS");
-                            this.invitations.add(invitation);
-                            envoyerInvitation(invitation);
+                            if(!aliasExpediteur.equals(argument)) {
+                                Invitation invitation = new Invitation(aliasExpediteur, argument, "CHESS");
+                                this.invitations.add(invitation);
+                                envoyerInvitation(invitation);
+                            }
+
                         }
                     }
 
@@ -229,7 +235,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         if(this.salonsPrives.get(i).getAliasHote().equals(aliasExpediteur) || this.salonsPrives.get(i).getAliasInvite().equals(aliasExpediteur)) {
                             if(this.salonsPrives.get(i).getPartieEchecs() != null) {
                                 if (this.salonsPrives.get(i).getPartieEchecs().deplace(posInitiale, posFinale)) {
-                                    this.salonsPrives.get(i).getPartieEchecs().changerTour();
                                     String mat = "e";
                                     for (int j = 0; j < serveur.connectes.size(); ++j) {
                                         Connexion connexion = serveur.connectes.elementAt(j);

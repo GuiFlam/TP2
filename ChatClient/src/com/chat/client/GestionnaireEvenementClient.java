@@ -90,12 +90,6 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                         }
                     }
 
-
-
-
-
-
-
                     char piece = ' ';
 
                     EtatPartieEchecs etatPartieEchecs = clientChat.getEtatPartieEchecs();
