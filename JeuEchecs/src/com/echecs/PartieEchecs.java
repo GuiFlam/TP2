@@ -441,7 +441,12 @@ public class PartieEchecs {
                     }
                 }
             }
-            return roiBlancEchecMat ? 'b' : 'n';
+            if(roiBlancEchecMat) {
+                return 'b';
+            }
+            if(roiNoirEchecMat) {
+                return 'n';
+            }
         }
         return caractere;
     }

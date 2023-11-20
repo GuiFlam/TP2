@@ -60,7 +60,6 @@ public class GestionnaireEvenementClient implements GestionnaireEvenement {
                     System.out.print("Une nouvelle partie est creer, vous etes ");
                     System.out.println(Character.compare(evenement.getArgument().toCharArray()[0], 'b') == 0 ? "les BLANCS\n" : "les NOIRS\n");
                     clientChat.nouvellePartie();
-
                     System.out.println();
                     System.out.println("---------------------------------");
                     System.out.println(clientChat.getEtatPartieEchecs());
