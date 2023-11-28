@@ -29,7 +29,7 @@ public class Observable {
 		
 	  //Demande � tous les observateurs de se mettre � jour :
 	  public void notifierObservateurs() {
-
+		System.out.println("Length des observateurs: " + this.observateurs.size());
 		 ListIterator<Observateur> iterateur = this.observateurs.listIterator();
 		 while (iterateur.hasNext())
 			iterateur.next().seMettreAJour(this);

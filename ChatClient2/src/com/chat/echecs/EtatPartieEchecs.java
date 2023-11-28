@@ -56,19 +56,31 @@ public class EtatPartieEchecs extends Observable {
         boolean res = false;
         //à compléter
 
-        if(deplacement.length() == 5) {
-            char[] tableau = deplacement.toCharArray();
-            if(estLettreValide(tableau[0]) && estChiffreValide(tableau[1]) && estLettreValide(tableau[3]) && estChiffreValide(tableau[4])) {
-                char temp = etatEchiquier[(int)tableau[0]-97][tableau[1]-1];
-                etatEchiquier[(int)tableau[0]-97][tableau[1]-1] = ' ';
-                etatEchiquier[(int)tableau[3]-97][tableau[4]-1] = temp;
-                if(etatEchiquier[(int)tableau[3]-97][tableau[4]-1] == 'p' && tableau[4]-1 == 0) {
-                    etatEchiquier[(int)tableau[3]-97][tableau[4]-1] = 'd';
+
+        char[] tableau = deplacement.toCharArray();
+        tableau[1] -= 49;
+        tableau[4] -= 49;
+        System.out.println(tableau[0] + "" + ((int)tableau[1]) + "-" + tableau[3] + "" + ((int)tableau[4]));
+        if(tableau.length == 5) {
+            System.out.println(estLettreValide(tableau[0]));
+            System.out.println(estChiffreValide((int)tableau[1]));
+            System.out.println(estLettreValide(tableau[3]));
+            System.out.println(estChiffreValide((int)tableau[4]));
+
+            if(estLettreValide(tableau[0]) && estChiffreValide((int)tableau[1]) && estLettreValide(tableau[3]) && estChiffreValide((int)tableau[4])) {
+                System.out.print("ici");
+                char temp = etatEchiquier[(int)tableau[0]-97][tableau[1]];
+                etatEchiquier[(int)tableau[0]-97][tableau[1]] = ' ';
+                etatEchiquier[(int)tableau[3]-97][tableau[4]] = temp;
+                if(etatEchiquier[(int)tableau[3]-97][tableau[4]] == 'p' && tableau[4] == 0) {
+                    etatEchiquier[(int)tableau[3]-97][tableau[4]] = 'd';
                 }
-                else if(etatEchiquier[(int)tableau[3]-97][tableau[4]-1] == 'P' && tableau[4]-1 == 7) {
-                    etatEchiquier[(int)tableau[3]-97][tableau[4]-1] = 'D';
+                else if(etatEchiquier[(int)tableau[3]-97][tableau[4]] == 'P' && tableau[4] == 7) {
+                    etatEchiquier[(int)tableau[3]-97][tableau[4]] = 'D';
                 }
+                System.out.println("avant");
                 super.notifierObservateurs();
+                System.out.println("apres");
                 res = true;
             }
         }
@@ -78,7 +90,7 @@ public class EtatPartieEchecs extends Observable {
         return (int)c >= 97 && (int)c <= 104;
     }
     private boolean estChiffreValide(int c) {
-        return c >= 1 && c <= 8;
+        return c >= 0 && c <= 7;
     }
     @Override
     public String toString() {
