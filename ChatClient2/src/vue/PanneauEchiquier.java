@@ -16,7 +16,7 @@ import java.util.Observer;
  * @version 1.0
  * @since 2023-10-01
  */
-public class PanneauEchiquier extends JPanel implements Observateur, Observer {
+public class PanneauEchiquier extends JPanel implements Observateur {
     private JButton[][] boutons = new JButton[8][8];
     private EtatPartieEchecs partie;
     private ActionListener ecouteurJeuEchecs;
@@ -26,6 +26,7 @@ public class PanneauEchiquier extends JPanel implements Observateur, Observer {
         this.setLayout(new BorderLayout());
         char[][] echiquier = partie.getEtatEchiquier();
         ecouteurJeuEchecs = new EcouteurJeuEchecs(null);
+
         for (int i=0;i<boutons.length;i++)
             for (int j=0;j<boutons[i].length;j++) {
                 boutons[i][j] = new JButton();
@@ -56,8 +57,4 @@ public class PanneauEchiquier extends JPanel implements Observateur, Observer {
 
     }
 
-    @Override
-    public void update(java.util.Observable o, Object arg) {
-
-    }
 }

@@ -20,15 +20,15 @@ public class PanneauConfigServeur extends JPanel {
         JLabel ipLabel = new JLabel("Adresse IP:");
         JLabel portLabel = new JLabel("Port:");
 
-        JTextField ipTextField = new JTextField();
-        ipTextField.setText(adr);
-        JTextField portTextField = new JTextField();
-        portTextField.setText(Integer.toString(port));
+        txtAdrServeur = new JTextField();
+        txtAdrServeur.setText(adr);
+        txtNumPort = new JTextField();
+        txtNumPort.setText(Integer.toString(port));
 
         add(ipLabel);
-        add(ipTextField);
+        add(txtAdrServeur);
         add(portLabel);
-        add(portTextField);
+        add(txtNumPort);
     }
     public String getAdresseServeur() {
         return txtAdrServeur.getText();

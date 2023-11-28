@@ -53,6 +53,7 @@ public class EcouteurMenuPrincipal implements ActionListener {
                     break;
                 case "CONFIGURER":
                     PanneauConfigServeur pcs = new PanneauConfigServeur(clientChat.getAdrServeur(),clientChat.getPortServeur());
+                    recommencer = true;
                     do {
                         res = JOptionPane.showConfirmDialog(fenetre, pcs, "Configuration serveur", JOptionPane.OK_CANCEL_OPTION);
                         if (res == JOptionPane.OK_OPTION) {
@@ -62,13 +63,17 @@ public class EcouteurMenuPrincipal implements ActionListener {
                                 clientChat.setPortServeur(port);
                                 recommencer=false;
                             } catch (NumberFormatException exp) {
-                                JOptionPane.showMessageDialog(fenetre, "Le port (" + pcs.getPortServeur() + ") doit etre entier");
-                                recommencer = true;
+                                JOptionPane.showMessageDialog(fenetre, "Le port ("
+                                        + pcs.getPortServeur() + ") doit être entier");
                             }
                         }
                         else
                             recommencer=false;
                     }while (recommencer);
+
+
+
+
                     break;
                 case "QUITTER":
                     if (clientChat.isConnecte()) {
