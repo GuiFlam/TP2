@@ -1,9 +1,9 @@
 package com.chat.echecs;
 
+import observer.Observable;
 import observer.Observateur;
 import vue.PanneauEchiquier;
 
-import java.util.Observable;
 import java.util.Observer;
 
 /**
@@ -68,7 +68,7 @@ public class EtatPartieEchecs extends Observable {
                 else if(etatEchiquier[(int)tableau[3]-97][tableau[4]-1] == 'P' && tableau[4]-1 == 7) {
                     etatEchiquier[(int)tableau[3]-97][tableau[4]-1] = 'D';
                 }
-                notifyObservers();
+                super.notifierObservateurs();
                 res = true;
             }
         }
@@ -101,9 +101,10 @@ public class EtatPartieEchecs extends Observable {
 
     public void setEtatEchiquier(char[][] etatEchiquier) {
         this.etatEchiquier = etatEchiquier;
+
     }
 
     public void ajouterObservateur(PanneauEchiquier panneauEchiquier) {
-
+        super.ajouterObservateur(panneauEchiquier);
     }
 }
