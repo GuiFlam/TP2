@@ -55,15 +55,12 @@ public class PanneauEchiquier extends JPanel implements Observateur {
     @Override
     public void seMettreAJour(Observable observable) {
         if(observable instanceof EtatPartieEchecs) {
-            char[][] echiquier = ((EtatPartieEchecs) observable).getEtatEchiquier();
             for (int i=0;i<boutons.length;i++)
                 for (int j=0;j<boutons[i].length;j++) {
-                    if (echiquier[i][j]!=' ')
-                        boutons[i][j].setIcon(ServiceImages.getIconePourPiece(echiquier[i][j]));
+                    if (partie.getEtatEchiquier()[i][j]!=' ')
+                        boutons[i][j].setIcon(ServiceImages.getIconePourPiece(partie.getEtatEchiquier()[i][j]));
                     else
                         boutons[i][j].setIcon(null);
-
-                    boutons[i][j].repaint();
                 }
         }
     }

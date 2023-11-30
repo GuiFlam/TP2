@@ -43,6 +43,7 @@ public class EcouteurChatPrive extends EcouteurChatPublic {
             }
             else {
                 clientChat.envoyer("PRV " + alias + " " + text);
+                super.panneauChat.ajouter("MOI>>" + text);
             }
             source.setText("");
         }

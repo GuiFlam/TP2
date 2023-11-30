@@ -1,5 +1,7 @@
 package observer;
 
+import com.chat.echecs.EtatPartieEchecs;
+
 import java.util.ArrayList;
 import java.util.ListIterator;
 /**

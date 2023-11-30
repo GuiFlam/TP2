@@ -118,7 +118,7 @@ public class PanneauPrincipal  extends JPanel {
         String message = alias+">>"+msg;
         System.out.println("PRIVÉ : "+alias+">>"+msg);
         //à compléter
-        panneauxPrives.get(alias).ajouter(msg);
+        panneauxPrives.get(alias).ajouter(alias + ">>"+ msg);
     }
 
     public void inviteEchecs(String alias) {

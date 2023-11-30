@@ -168,9 +168,11 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                     JOptionPane.showMessageDialog(fenetreEchecs,evenement.getArgument());
                     break;
                 case "MOVE":
+                    System.out.println("ON EST ICI!!!!!");
                     etat = ((ClientChat)client).getEtatPartieEchecs();
                     arg = evenement.getArgument();
                     if (etat.move(arg)) {
+                        ((ClientChat)client).setEtatPartieEchecs(etat);
                         System.out.println(etat);
                     }
                     break;
