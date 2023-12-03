@@ -70,10 +70,6 @@ public class EcouteurMenuPrincipal implements ActionListener {
                         else
                             recommencer=false;
                     }while (recommencer);
-
-
-
-
                     break;
                 case "QUITTER":
                     if (clientChat.isConnecte()) {

@@ -22,6 +22,7 @@ public class PanneauInvitations extends JPanel {
 
         invitationsRecues = new DefaultListModel<>();
         jlInvitationsRecues = new JList<>(invitationsRecues);
+        jlInvitationsRecues.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         bAccepte = new JButton("+");
         bAccepte.setActionCommand("ACCEPTER");

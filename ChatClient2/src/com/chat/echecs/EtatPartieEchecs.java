@@ -79,11 +79,11 @@ public class EtatPartieEchecs extends Observable {
                 etatEchiquier[tableau[1]][(int)tableau[0]-'a'] = ' ';
 
 
-                if(etatEchiquier[tableau[4]][(int)tableau[3]] == 'p' && tableau[4] == 0) {
-                    etatEchiquier[tableau[4]][(int)tableau[3]] = 'd';
+                if(etatEchiquier[tableau[4]][(int)tableau[3]-'a'] == 'p' && tableau[4] == 0) {
+                    etatEchiquier[tableau[4]][(int)tableau[3]-'a'] = 'd';
                 }
-                else if(etatEchiquier[tableau[4]][(int)tableau[3]] == 'P' && tableau[4] == 7) {
-                    etatEchiquier[tableau[4]][(int)tableau[3]] = 'D';
+                else if(etatEchiquier[tableau[4]][(int)tableau[3]-'a'] == 'P' && tableau[4] == 7) {
+                    etatEchiquier[tableau[4]][(int)tableau[3]-'a'] = 'D';
                 }
 
                 System.out.println("avant");
