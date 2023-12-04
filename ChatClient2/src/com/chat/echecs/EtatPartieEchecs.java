@@ -59,38 +59,27 @@ public class EtatPartieEchecs extends Observable {
 
         char[] tableau = deplacement.toCharArray();
         tableau[1] -= 48;
-        tableau[4] -= 48;
+        tableau[tableau.length-1] -= 48;
         System.out.println(tableau[0] + "" + ((int)tableau[1]) + "-" + tableau[3] + "" + ((int)tableau[4]));
-        if(tableau.length == 5) {
-            System.out.println(estLettreValide(tableau[0]));
-            System.out.println(estChiffreValide((int)tableau[1]));
-            System.out.println(estLettreValide(tableau[3]));
-            System.out.println(estChiffreValide((int)tableau[4]));
 
-
-            if(estLettreValide(tableau[0]) && estChiffreValide((int)tableau[1]) && estLettreValide(tableau[3]) && estChiffreValide((int)tableau[4])) {
-                System.out.print("ici\n");
-
-                tableau[1] = (char)(8 - tableau[1]);
-                tableau[4] = (char)(8 - tableau[4]);
-
-                System.out.println((tableau[0]-'a') + "" + ((int)tableau[1]) + "-" + (tableau[3]-'a') + "" + ((int)tableau[4]));
-                etatEchiquier[tableau[4]][(int)tableau[3]-'a'] = etatEchiquier[tableau[1]][(int)tableau[0]-'a'];
-                etatEchiquier[tableau[1]][(int)tableau[0]-'a'] = ' ';
-
-
-                if(etatEchiquier[tableau[4]][(int)tableau[3]-'a'] == 'p' && tableau[4] == 0) {
-                    etatEchiquier[tableau[4]][(int)tableau[3]-'a'] = 'd';
-                }
-                else if(etatEchiquier[tableau[4]][(int)tableau[3]-'a'] == 'P' && tableau[4] == 7) {
-                    etatEchiquier[tableau[4]][(int)tableau[3]-'a'] = 'D';
-                }
-
-                System.out.println("avant");
-                this.notifierObservateurs();
-                System.out.println("apres");
-                res = true;
+        if(estLettreValide(tableau[0]) && estChiffreValide((int)tableau[1]) && estLettreValide(tableau[tableau.length-2]) && estChiffreValide((int)tableau[tableau.length-1])) {
+            System.out.print("ici\n");
+            tableau[1] = (char)(8 - tableau[1]);
+            tableau[tableau.length-1] = (char)(8 - tableau[4]);
+            System.out.println((tableau[0]-'a') + "" + ((int)tableau[1]) + "-" + (tableau[tableau.length-2]-'a') + "" + ((int)tableau[4]));
+            etatEchiquier[tableau[tableau.length-1]][(int)tableau[tableau.length-2]-'a'] = etatEchiquier[tableau[1]][(int)tableau[0]-'a'];
+            etatEchiquier[tableau[1]][(int)tableau[0]-'a'] = ' ';
+            if(etatEchiquier[tableau[tableau.length-1]][(int)tableau[tableau.length-2]-'a'] == 'p' && tableau[tableau.length-1] == 0) {
+                etatEchiquier[tableau[tableau.length-1]][(int)tableau[tableau.length-2]-'a'] = 'd';
             }
+            else if(etatEchiquier[tableau[tableau.length-1]][(int)tableau[tableau.length-2]-'a'] == 'P' && tableau[tableau.length-1] == 7) {
+                etatEchiquier[tableau[tableau.length-1]][(int)tableau[tableau.length-2]-'a'] = 'D';
+            }
+            System.out.println("avant");
+            this.notifierObservateurs();
+            System.out.println("apres");
+            res = true;
+
         }
         return res;
     }
